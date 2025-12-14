@@ -1,0 +1,191 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import '@xyflow/react/dist/style.css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --radius-sm: 0.3rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  --font-sans: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Custom Mind Map Colors */
+  --color-node-bg: hsl(var(--node-bg));
+  --color-node-border: hsl(var(--node-border));
+  --color-node-selected: hsl(var(--primary));
+  --color-canvas-bg: hsl(var(--canvas-bg));
+  --color-edge: hsl(var(--edge));
+}
+
+:root {
+  /* Default Light Theme Variables */
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 3.9%;
+  --primary: 240 5.9% 10%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --ring: 240 5.9% 10%;
+  
+  --node-bg: 0 0% 100%;
+  --node-border: 240 5.9% 90%;
+  --canvas-bg: 240 4.8% 98.5%;
+  --edge: 240 5.9% 80%;
+
+  color-scheme: light;
+}
+
+.dark {
+  --background: 224 71% 4%;
+  --foreground: 213 31% 91%;
+  --card: 224 71% 4%;
+  --card-foreground: 213 31% 91%;
+  --popover: 224 71% 4%;
+  --popover-foreground: 213 31% 91%;
+  --primary: 210 40% 98%;
+  --primary-foreground: 222.2 47.4% 11.2%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 217.2 32.6% 17.5%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 212.7 26.8% 83.9%;
+
+  --node-bg: 222 47% 11%;
+  --node-border: 216 34% 17%;
+  --canvas-bg: 224 71% 4%;
+  --edge: 216 34% 30%;
+
+  color-scheme: dark;
+}
+
+/* Custom Cursor for better visibility in all modes */
+html, body {
+  cursor: default;
+}
+
+/* Ensure high contrast cursor in all modes, especially light mode on white backgrounds */
+html:not(.dark) body {
+  cursor: default; /* Browser default is usually black with white outline, which is good */
+}
+
+/* Custom cursor style if standard one isn't visible enough */
+/* For MindMap canvas specifically, handled via ReactFlow props or class */
+.react-flow__pane {
+  cursor: grab;
+}
+
+.react-flow__pane.dragging {
+  cursor: grabbing;
+}
+
+/* Force black cursor in light mode if system default is white */
+@media (prefers-color-scheme: light) {
+  body {
+    cursor: default;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply font-sans antialiased bg-canvas-bg text-foreground overflow-hidden transition-colors duration-300;
+  }
+}
+
+/* React Flow Customization */
+.react-flow__node {
+  @apply shadow-lg rounded-xl transition-all duration-300;
+}
+
+.react-flow__edge-path {
+  @apply stroke-edge stroke-2 transition-colors duration-300;
+}
+
+.react-flow__controls-button {
+  @apply bg-card border-border fill-foreground text-foreground hover:bg-accent;
+}
+
+.react-flow__attribution {
+  @apply bg-transparent opacity-50;
+}
+
+/* Markdown Styling Enhancements */
+.markdown-content {
+  @apply text-sm leading-relaxed;
+}
+
+.markdown-content h1 { @apply text-xl font-bold mb-2 pb-1 border-b border-border; }
+.markdown-content h2 { @apply text-lg font-bold mb-1 text-primary; }
+.markdown-content h3 { @apply text-base font-bold mb-1; }
+.markdown-content p { @apply mb-1.5 last:mb-0; }
+.markdown-content ul { @apply list-disc list-inside mb-1 pl-1; }
+.markdown-content ol { @apply list-decimal list-inside mb-1 pl-1; }
+.markdown-content code { @apply font-mono bg-muted/50 px-1 py-0.5 rounded text-xs text-primary border border-border/50; }
+.markdown-content pre { @apply bg-muted/50 p-2 rounded-md my-2 overflow-x-auto border border-border/50; }
+.markdown-content blockquote { @apply border-l-4 border-primary/30 pl-3 italic text-muted-foreground; }
+.markdown-content a { @apply text-primary hover:underline decoration-primary/30 underline-offset-2; }
+.markdown-content img { @apply max-w-full rounded-md border border-border my-1; }
+
+/* Scrollbar refinement */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/20 rounded-full hover:bg-muted-foreground/40 transition-colors;
+}
