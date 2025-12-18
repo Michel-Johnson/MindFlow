@@ -82,7 +82,30 @@ const radialLayout = (nodes: Node[], edges: Edge[]): Node[] => {
       if (nodeChildren.length === 0) return [];
 
       const parentLevel = levels.get(parentId) || 0;
-      const radius = baseRadius + parentLevel * radiusIncrement;
+      // --- Compute a radius that guarantees no overlap between parent and its children ---
+      // 1. Base radius by level
+      let radius = baseRadius + parentLevel * radiusIncrement;
+
+      // 2. Get parent size
+      const parentSize = getNodeSize(parentId);
+      const parentHalfDiagonal = Math.max(parentSize.width, parentSize.height) / 2;
+
+      // 3. Get the largest child size for this parent
+      let maxChildHalfDiagonal = 0;
+      nodeChildren.forEach((childId) => {
+        const childSize = getNodeSize(childId);
+        const childHalfDiagonal = Math.max(childSize.width, childSize.height) / 2;
+        if (childHalfDiagonal > maxChildHalfDiagonal) {
+          maxChildHalfDiagonal = childHalfDiagonal;
+        }
+      });
+
+      // 4. Ensure radial distance is large enough to avoid parent/child overlap
+      const minRequiredRadius = parentHalfDiagonal + maxChildHalfDiagonal + 80; // extra padding
+      if (radius < minRequiredRadius) {
+        radius = minRequiredRadius;
+      }
+
       const parentPos = positions.get(parentId)!;
       const childAngles: number[] = [];
 
@@ -129,6 +152,61 @@ const radialLayout = (nodes: Node[], edges: Edge[]): Node[] => {
   roots.forEach((root) => {
     layoutTree(root.id, currentOffset + 600, 600);
     currentOffset += 1200;
+  });
+
+  // After initial radial placement, ensure that each child is shifted horizontally
+  // away from its parent so that their bounding boxes (with padding) don't overlap.
+  // 对于右侧子节点，持续向右平移；左侧子节点持续向左平移，直到不遮挡父节点。
+  const parentChildPadding = 40;
+  const parentChildStep = 40;
+  const maxParentChildIterations = 20;
+
+  edges.forEach(edge => {
+    const parentId = edge.source;
+    const childId = edge.target;
+    const parentPos = positions.get(parentId);
+    const childPos = positions.get(childId);
+    if (!parentPos || !childPos) return;
+
+    const parentSize = getNodeSize(parentId);
+    const childSize = getNodeSize(childId);
+
+    let cx = childPos.x;
+    const cy = childPos.y;
+    const px = parentPos.x;
+    const py = parentPos.y;
+
+    // 判断子节点在父节点的左侧还是右侧
+    const isRightSide = cx >= px;
+    const direction = isRightSide ? 1 : -1;
+
+    let iter = 0;
+    while (iter < maxParentChildIterations) {
+      const parentLeft = px - parentSize.width / 2;
+      const parentRight = px + parentSize.width / 2;
+      const parentTop = py - parentSize.height / 2;
+      const parentBottom = py + parentSize.height / 2;
+
+      const childLeft = cx - childSize.width / 2;
+      const childRight = cx + childSize.width / 2;
+      const childTop = cy - childSize.height / 2;
+      const childBottom = cy + childSize.height / 2;
+
+      const overlapsParent = !(
+        childRight + parentChildPadding <= parentLeft ||
+        childLeft - parentChildPadding >= parentRight ||
+        childBottom + parentChildPadding <= parentTop ||
+        childTop - parentChildPadding >= parentBottom
+      );
+
+      if (!overlapsParent) break;
+
+      // 仅在水平方向上平移，保证“向外伸展”的视觉效果
+      cx += direction * parentChildStep;
+      iter++;
+    }
+
+    positions.set(childId, { x: cx, y: cy });
   });
 
   nodes.forEach(node => {
@@ -275,21 +353,6 @@ const horizontalLayout = (nodes: Node[], edges: Edge[]): { nodes: Node[], edges:
     return Math.max(nodeSize.height, totalHeight);
   };
   
-  // Helper to get the actual bottom Y coordinate of a subtree
-  const getSubtreeBottom = (nodeId: string): number => {
-    const pos = positions.get(nodeId);
-    if (!pos) return 0;
-    const size = getNodeSize(nodeId);
-    let bottom = pos.y + size.height / 2;
-    
-    const kids = children.get(nodeId) || [];
-    kids.forEach(kid => {
-      bottom = Math.max(bottom, getSubtreeBottom(kid));
-    });
-    
-    return bottom;
-  };
-  
   // Initial compact layout - parent centered, children spread out from parent
   const initialLayout = (
     nodeId: string,
@@ -339,7 +402,7 @@ const horizontalLayout = (nodes: Node[], edges: Edge[]): { nodes: Node[], edges:
     return Math.max(nodeSize.height, totalChildrenHeight);
   };
   
-  // Resolve overlaps by adjusting spacing between siblings only
+  // Resolve vertical overlaps by adjusting spacing between siblings only
   // This keeps children close to their parents and avoids moving entire subtrees
   const resolveOverlaps = (): void => {
     const maxIterations = 50;
@@ -441,6 +504,16 @@ const horizontalLayout = (nodes: Node[], edges: Edge[]): { nodes: Node[], edges:
     } else {
       console.log('✓ Layout完成，无遮挡 (', iteration, '次迭代)');
     }
+  };
+  
+  // Move an entire subtree horizontally (parent and all descendants)
+  const moveSubtreeHorizontally = (nodeId: string, deltaX: number): void => {
+    const pos = positions.get(nodeId);
+    if (pos) {
+      positions.set(nodeId, { x: pos.x + deltaX, y: pos.y });
+    }
+    const kids = children.get(nodeId) || [];
+    kids.forEach(kidId => moveSubtreeHorizontally(kidId, deltaX));
   };
   
   // Get root children and determine sides
@@ -551,6 +624,41 @@ const horizontalLayout = (nodes: Node[], edges: Edge[]): { nodes: Node[], edges:
   
   // Resolve overlaps by adjusting node positions
   resolveOverlaps();
+  
+  // Extra pass: ensure that parent and direct child in the same column do not overlap horizontally.
+  // 对于横向布局，子节点应该从父节点左右“伸出去”，不能压在父节点上。
+  const parentChildPaddingX = 40;
+  const parentChildStepX = 40;
+  const maxParentChildIterations = 20;
+  
+  edges.forEach(edge => {
+    const parentId = edge.source;
+    const childId = edge.target;
+    let iter = 0;
+    
+    while (iter < maxParentChildIterations) {
+      const parentBounds = getNodeBounds(parentId);
+      const childBounds = getNodeBounds(childId);
+      if (!parentBounds || !childBounds) break;
+      
+      const overlaps = nodesOverlap(
+        { x: parentBounds.x, y: parentBounds.y },
+        { width: parentBounds.width, height: parentBounds.height },
+        { x: childBounds.x, y: childBounds.y },
+        { width: childBounds.width, height: childBounds.height },
+        parentChildPaddingX
+      );
+      
+      if (!overlaps) break;
+      
+      const parentCenterX = parentBounds.x + parentBounds.width / 2;
+      const childCenterX = childBounds.x + childBounds.width / 2;
+      const direction = childCenterX >= parentCenterX ? 1 : -1;
+      
+      moveSubtreeHorizontally(childId, direction * parentChildStepX);
+      iter++;
+    }
+  });
   
   // Handle orphaned nodes
   nodes.forEach(node => {
