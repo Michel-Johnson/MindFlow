@@ -14,7 +14,8 @@ import {
   Panel,
   BackgroundVariant,
   ConnectionLineType,
-  SelectionMode
+  SelectionMode,
+  Position
 } from '@xyflow/react';
 
 import '@xyflow/react/dist/style.css';
@@ -55,12 +56,56 @@ const nodeTypes = {
   custom: CustomNode,
 };
 
+// Helper function to calculate node levels (depth from root)
+const calculateNodeLevels = (nodes: Node[], edges: Edge[]): Map<string, number> => {
+  const levels = new Map<string, number>();
+  const targetIds = new Set(edges.map(e => e.target));
+  const parentMap = new Map<string, string>();
+  
+  // Build parent map
+  edges.forEach(edge => {
+    parentMap.set(edge.target, edge.source);
+  });
+  
+  // Find root nodes (nodes with no incoming edges)
+  const rootNodes = nodes.filter(n => !targetIds.has(n.id));
+  
+  // Calculate levels using BFS
+  const queue: { id: string; level: number }[] = rootNodes.map(n => ({ id: n.id, level: 0 }));
+  const visited = new Set<string>();
+  
+  while (queue.length > 0) {
+    const { id, level } = queue.shift()!;
+    if (visited.has(id)) continue;
+    
+    visited.add(id);
+    levels.set(id, level);
+    
+    // Find children
+    const children = edges.filter(e => e.source === id).map(e => e.target);
+    children.forEach(childId => {
+      if (!visited.has(childId)) {
+        queue.push({ id: childId, level: level + 1 });
+      }
+    });
+  }
+  
+  // Set level 0 for any unvisited nodes (orphaned nodes)
+  nodes.forEach(node => {
+    if (!levels.has(node.id)) {
+      levels.set(node.id, 0);
+    }
+  });
+  
+  return levels;
+};
+
 const initialNodes: Node[] = [
   { 
     id: '1', 
     type: 'custom', 
     position: { x: 0, y: 0 }, 
-    data: { label: '# 中心主题\n在这里开始你的思维导图' },
+    data: { label: '# 中心主题\n在这里开始你的思维导图', level: 0 },
     selected: true
   },
 ];
@@ -119,6 +164,30 @@ function MindMapContent() {
     );
   }, [setNodes]);
 
+  // Handle font size change
+  const onFontSizeChange = useCallback((id: string, fontSize: 'small' | 'medium' | 'large' | 'xlarge') => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === id) {
+          return { ...node, data: { ...node.data, fontSize } };
+        }
+        return node;
+      })
+    );
+  }, [setNodes]);
+
+  // Handle node size change
+  const onNodeSizeChange = useCallback((id: string, nodeSize: 'small' | 'medium' | 'large' | 'xlarge') => {
+    setNodes((nds) =>
+      nds.map((node) => {
+        if (node.id === id) {
+          return { ...node, data: { ...node.data, nodeSize } };
+        }
+        return node;
+      })
+    );
+  }, [setNodes]);
+
   // Handle edit mode start
   const onEditStart = useCallback((id: string) => {
     setEditingNodeId(id);
@@ -157,27 +226,42 @@ function MindMapContent() {
     }
   }, []);
 
-  // Ensure all nodes have the handlers
+  // Calculate and update node levels whenever edges change or nodes are added
   useEffect(() => {
-    setNodes((nds) => 
-      nds.map((node) => {
-        const needsUpdate = !node.data.onChange || !node.data.onEditStart || !node.data.onEditEnd || !node.data.onResize;
-        if (needsUpdate) {
+    const currentNodes = getNodes();
+    const currentEdges = getEdges();
+    const levels = calculateNodeLevels(currentNodes, currentEdges);
+    
+    // Only update if levels have changed
+    let needsUpdate = false;
+    currentNodes.forEach(node => {
+      const level = levels.get(node.id) ?? 0;
+      if (node.data.level !== level || !node.data.onChange || !node.data.onEditStart || !node.data.onEditEnd || !node.data.onResize || !node.data.onFontSizeChange || !node.data.onNodeSizeChange) {
+        needsUpdate = true;
+      }
+    });
+    
+    if (needsUpdate) {
+      setNodes((nds) => 
+        nds.map((node) => {
+          const level = levels.get(node.id) ?? 0;
           return { 
             ...node, 
             data: { 
               ...node.data, 
+              level,
               onChange: onNodeDataChange,
               onEditStart: onEditStart,
               onEditEnd: onEditEnd,
-              onResize: onNodeResize
+              onResize: onNodeResize,
+              onFontSizeChange: onFontSizeChange,
+              onNodeSizeChange: onNodeSizeChange
             } 
           };
-        }
-        return node;
-      })
-    );
-  }, [onNodeDataChange, onEditStart, onEditEnd, onNodeResize, setNodes]);
+        })
+      );
+    }
+  }, [edges, onNodeDataChange, onEditStart, onEditEnd, onNodeResize, onFontSizeChange, onNodeSizeChange, setNodes, getNodes, getEdges]);
 
   // Auto-Save Logic
   useEffect(() => {
@@ -189,7 +273,10 @@ function MindMapContent() {
           label: node.data.label,
           emoji: node.data.emoji,
           width: node.data.width,
-          height: node.data.height
+          height: node.data.height,
+          level: node.data.level,
+          fontSize: node.data.fontSize,
+          nodeSize: node.data.nodeSize
         }
       }));
       const data = {
@@ -243,7 +330,21 @@ function MindMapContent() {
       const data = JSON.parse(text);
       
       if (data.nodes && data.edges) {
-        setNodes(data.nodes);
+        // Add callbacks to loaded nodes
+        const nodesWithCallbacks = data.nodes.map((node: Node) => ({
+          ...node,
+          data: {
+            ...node.data,
+            onChange: onNodeDataChange,
+            onEditStart: onEditStart,
+            onEditEnd: onEditEnd,
+            onResize: onNodeResize,
+            onFontSizeChange: onFontSizeChange,
+            onNodeSizeChange: onNodeSizeChange
+          }
+        }));
+        
+        setNodes(nodesWithCallbacks);
         setEdges(data.edges);
         
         if (data.viewport) {
@@ -260,7 +361,113 @@ function MindMapContent() {
       console.error(err);
       toast({ title: "加载失败", description: "无法加载项目文件", variant: "destructive" });
     }
-  }, [setNodes, setEdges, setViewport, fitView, toast]);
+  }, [setNodes, setEdges, setViewport, fitView, toast, onNodeDataChange, onEditStart, onEditEnd, onNodeResize, onFontSizeChange, onNodeSizeChange]);
+
+  // Helper function to find a position that doesn't overlap with existing nodes
+  const findNonOverlappingPosition = useCallback((
+    initialX: number, 
+    initialY: number, 
+    nodeWidth: number, 
+    nodeHeight: number,
+    existingNodes: Node[],
+    direction: 'right' | 'left'
+  ): { x: number; y: number } => {
+    const padding = 20;
+    let bestX = initialX;
+    let bestY = initialY;
+    let minDistance = Infinity;
+    
+    // Try different Y positions to find the best one
+    for (let yOffset = -200; yOffset <= 200; yOffset += 50) {
+      const testY = initialY + yOffset;
+      const testX = initialX;
+      
+      // Check if this position overlaps with any existing node
+      let hasOverlap = false;
+      let totalDistance = 0;
+      
+      for (const existingNode of existingNodes) {
+        const existingWidth = existingNode.measured?.width ?? (existingNode.data?.width as number) ?? nodeWidth;
+        const existingHeight = existingNode.measured?.height ?? (existingNode.data?.height as number) ?? nodeHeight;
+        
+        const existingLeft = existingNode.position.x;
+        const existingRight = existingNode.position.x + existingWidth;
+        const existingTop = existingNode.position.y;
+        const existingBottom = existingNode.position.y + existingHeight;
+        
+        const testLeft = testX;
+        const testRight = testX + nodeWidth;
+        const testTop = testY;
+        const testBottom = testY + nodeHeight;
+        
+        // Check for overlap
+        if (!(testRight + padding < existingLeft || 
+              testLeft - padding > existingRight || 
+              testBottom + padding < existingTop || 
+              testTop - padding > existingBottom)) {
+          hasOverlap = true;
+          break;
+        }
+        
+        // Calculate distance to find the closest non-overlapping position
+        const centerX = (testLeft + testRight) / 2;
+        const centerY = (testTop + testBottom) / 2;
+        const existingCenterX = (existingLeft + existingRight) / 2;
+        const existingCenterY = (existingTop + existingBottom) / 2;
+        
+        const distance = Math.sqrt(
+          Math.pow(centerX - existingCenterX, 2) + 
+          Math.pow(centerY - existingCenterY, 2)
+        );
+        totalDistance += distance;
+      }
+      
+      if (!hasOverlap && totalDistance < minDistance) {
+        minDistance = totalDistance;
+        bestX = testX;
+        bestY = testY;
+      }
+    }
+    
+    // If still overlapping, try adjusting X position
+    if (minDistance === Infinity) {
+      const xOffset = direction === 'right' ? 50 : -50;
+      for (let xAdjust = 0; xAdjust < 500; xAdjust += 50) {
+        const testX = initialX + (direction === 'right' ? xAdjust : -xAdjust);
+        let hasOverlap = false;
+        
+        for (const existingNode of existingNodes) {
+          const existingWidth = existingNode.measured?.width ?? (existingNode.data?.width as number) ?? nodeWidth;
+          const existingHeight = existingNode.measured?.height ?? (existingNode.data?.height as number) ?? nodeHeight;
+          
+          const existingLeft = existingNode.position.x;
+          const existingRight = existingNode.position.x + existingWidth;
+          const existingTop = existingNode.position.y;
+          const existingBottom = existingNode.position.y + existingHeight;
+          
+          const testLeft = testX;
+          const testRight = testX + nodeWidth;
+          const testTop = bestY;
+          const testBottom = bestY + nodeHeight;
+          
+          if (!(testRight + padding < existingLeft || 
+                testLeft - padding > existingRight || 
+                testBottom + padding < existingTop || 
+                testTop - padding > existingBottom)) {
+            hasOverlap = true;
+            break;
+          }
+        }
+        
+        if (!hasOverlap) {
+          bestX = testX;
+          break;
+        }
+      }
+    }
+    
+    return { x: bestX, y: bestY };
+  }, []);
 
   // Add Sibling Node
   const addSiblingNode = useCallback(() => {
@@ -274,18 +481,39 @@ function MindMapContent() {
     
     const selected = selectedNodes[0];
     const newNodeId = nanoid();
+    const allNodes = getNodes();
+    const defaultWidth = 200;
+    const defaultHeight = 100;
+    
+    // Initial position (below the selected node)
+    const initialX = selected.position.x;
+    const initialY = selected.position.y + 120;
+    
+    // Find non-overlapping position
+    const { x: finalX, y: finalY } = findNonOverlappingPosition(
+      initialX,
+      initialY,
+      defaultWidth,
+      defaultHeight,
+      allNodes.filter(n => n.id !== newNodeId),
+      'right' // For sibling, direction doesn't matter much
+    );
     
     // Add sibling (same level, below)
+    const selectedLevel = (selected.data?.level as number) ?? 0;
     const newNode: Node = {
       id: newNodeId,
       type: 'custom',
-      position: { x: selected.position.x, y: selected.position.y + 100 },
+      position: { x: finalX, y: finalY },
       data: { 
-        label: '新节点', 
+        label: '新节点',
+        level: selectedLevel,
         onChange: onNodeDataChange,
         onEditStart: onEditStart,
         onEditEnd: onEditEnd,
-        onResize: onNodeResize
+        onResize: onNodeResize,
+        onFontSizeChange: onFontSizeChange,
+        onNodeSizeChange: onNodeSizeChange
       },
       selected: true
     };
@@ -306,7 +534,7 @@ function MindMapContent() {
       };
       setEdges((eds) => eds.concat(newEdge));
     }
-  }, [editingNodeId, getNodes, getEdges, onNodeDataChange, onEditStart, onEditEnd, onNodeResize, setNodes, setEdges, toast]);
+  }, [editingNodeId, getNodes, getEdges, onNodeDataChange, onEditStart, onEditEnd, onNodeResize, onFontSizeChange, onNodeSizeChange, setNodes, setEdges, toast, findNonOverlappingPosition]);
 
   // Add Child Node (direction: 'right' or 'left')
   const addChildNode = useCallback((direction: 'right' | 'left' = 'right') => {
@@ -320,30 +548,61 @@ function MindMapContent() {
     
     const parent = selectedNodes[0];
     const newNodeId = nanoid();
+    const allNodes = getNodes();
     
     // Calculate position based on direction
     const xOffset = direction === 'right' ? 350 : -350;
+    const parentLevel = (parent.data?.level as number) ?? 0;
+    const defaultWidth = 200;
+    const defaultHeight = 100;
+    
+    // Initial position
+    const initialX = parent.position.x + xOffset;
+    const initialY = parent.position.y;
+    
+    // Find non-overlapping position
+    const { x: finalX, y: finalY } = findNonOverlappingPosition(
+      initialX,
+      initialY,
+      defaultWidth,
+      defaultHeight,
+      allNodes.filter(n => n.id !== newNodeId),
+      direction
+    );
+    
+    // Set handle positions based on direction
+    const targetPos = direction === 'right' ? Position.Left : Position.Right;
+    const sourcePos = direction === 'right' ? Position.Right : Position.Left;
+    
     const newNode: Node = {
       id: newNodeId,
       type: 'custom',
-      position: { x: parent.position.x + xOffset, y: parent.position.y + (Math.random() * 50 - 25) },
+      position: { x: finalX, y: finalY },
+      targetPosition: targetPos,
+      sourcePosition: sourcePos,
       data: { 
-        label: '新想法', 
+        label: '新想法',
+        level: parentLevel + 1,
         onChange: onNodeDataChange,
         onEditStart: onEditStart,
         onEditEnd: onEditEnd,
-        onResize: onNodeResize
+        onResize: onNodeResize,
+        onFontSizeChange: onFontSizeChange,
+        onNodeSizeChange: onNodeSizeChange
       },
       selected: true
     };
 
-    // Deselect parent
+    // Deselect parent and add new node
     setNodes((nds) => [...nds.map(n => ({ ...n, selected: false })), newNode]);
 
+    // Create edge with correct source handle and target handle based on direction
     const newEdge: Edge = {
       id: `e${parent.id}-${newNodeId}`,
       source: parent.id,
       target: newNodeId,
+      sourceHandle: direction === 'right' ? 'right' : 'left',
+      targetHandle: direction === 'right' ? 'left' : 'right',
       type: ConnectionLineType.Bezier,
       animated: false,
       style: { strokeWidth: 2, stroke: '#888888' },
@@ -351,7 +610,7 @@ function MindMapContent() {
 
     setEdges((eds) => eds.concat(newEdge));
     
-  }, [editingNodeId, getNodes, onNodeDataChange, onEditStart, onEditEnd, onNodeResize, setNodes, setEdges, toast]);
+  }, [editingNodeId, getNodes, getEdges, onNodeDataChange, onEditStart, onEditEnd, onNodeResize, onFontSizeChange, onNodeSizeChange, setNodes, setEdges, toast, findNonOverlappingPosition]);
 
   // Keyboard Shortcuts
   useEffect(() => {
@@ -468,31 +727,59 @@ function MindMapContent() {
   };
   
   const handleImageUpload = (file: File) => {
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      toast({ title: "错误", description: "请选择图片文件", variant: "destructive" });
+      return;
+    }
+    
+    // Check file size (max 2MB for better performance)
+    if (file.size > 2 * 1024 * 1024) {
+      toast({ title: "错误", description: "图片大小不能超过 2MB，请使用压缩工具", variant: "destructive" });
+      return;
+    }
+    
     const reader = new FileReader();
     reader.onload = (e) => {
       const imageUrl = e.target?.result as string;
       if (imageUrl) {
-         setNodes(nds => nds.map(n => {
+        console.log('✓ Image converted to base64, length:', imageUrl.length);
+        setNodes(nds => nds.map(n => {
           if (n.selected) {
-             const newLabel = (n.data.label as string) + `\n\n![图片](${imageUrl})`;
-             return { ...n, data: { ...n.data, label: newLabel } };
+            const currentLabel = (n.data.label as string) || '';
+            // 使用简单的格式
+            const newLabel = currentLabel + `\n\n![图片](${imageUrl})`;
+            console.log('✓ Image added to node:', n.id);
+            return { ...n, data: { ...n.data, label: newLabel } };
           }
           return n;
-         }));
+        }));
+        toast({ 
+          title: "✓ 图片已添加", 
+          description: "图片已成功插入到节点中",
+          duration: 2000
+        });
       }
+    };
+    reader.onerror = (error) => {
+      console.error('✗ FileReader error:', error);
+      toast({ title: "错误", description: "图片读取失败", variant: "destructive" });
     };
     reader.readAsDataURL(file);
   };
 
   const handleExport = async (type: 'png' | 'svg' | 'pdf' | 'json') => {
     if (type === 'json') {
-      const cleanNodes = getNodes().map(node => ({
+        const cleanNodes = getNodes().map(node => ({
         ...node,
         data: {
           label: node.data.label,
           emoji: node.data.emoji,
           width: node.data.width,
-          height: node.data.height
+          height: node.data.height,
+          level: node.data.level,
+          fontSize: node.data.fontSize,
+          nodeSize: node.data.nodeSize
         }
       }));
       const data = { nodes: cleanNodes, edges: getEdges() };
