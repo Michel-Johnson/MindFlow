@@ -63,7 +63,7 @@ export function HelpDialog() {
               </li>
               <li className="flex justify-between items-center bg-muted/50 p-2 rounded">
                 <span>删除节点</span>
-                <kbd className="bg-background border px-1.5 rounded text-xs">Delete</kbd>
+                <kbd className="bg-background border px-1.5 rounded text-xs">Backspace</kbd>
               </li>
               <li className="flex justify-between items-center bg-muted/50 p-2 rounded">
                 <span>编辑节点</span>

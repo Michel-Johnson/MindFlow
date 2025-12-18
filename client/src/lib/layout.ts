@@ -157,7 +157,23 @@ const radialLayout = (nodes: Node[], edges: Edge[]): Node[] => {
   });
 };
 
-// Horizontal Layout - Smart layout based on actual node sizes
+// Check if two nodes overlap
+const nodesOverlap = (
+  pos1: { x: number; y: number },
+  size1: { width: number; height: number },
+  pos2: { x: number; y: number },
+  size2: { width: number; height: number },
+  padding: number = 20
+): boolean => {
+  return !(
+    pos1.x + size1.width + padding <= pos2.x ||
+    pos2.x + size2.width + padding <= pos1.x ||
+    pos1.y + size1.height + padding <= pos2.y ||
+    pos2.y + size2.height + padding <= pos1.y
+  );
+};
+
+// Horizontal Layout - Smart local adjustment layout
 const horizontalLayout = (nodes: Node[], edges: Edge[]): { nodes: Node[], edges: Edge[] } => {
   if (nodes.length === 0) return { nodes, edges };
   
@@ -169,81 +185,262 @@ const horizontalLayout = (nodes: Node[], edges: Edge[]): { nodes: Node[], edges:
   if (!rootNode) return { nodes, edges };
   
   // Build tree structure and node map
-  const { children } = buildTree(nodes, edges);
+  const { children, parent } = buildTree(nodes, edges);
   const nodeMap = new Map<string, Node>(nodes.map(n => [n.id, n]));
   
   const rootX = 800;
   const rootY = 500;
   const horizontalSpacing = 350;
-  const minVerticalGap = 30; // 节点之间的最小垂直间距
+  const baseVerticalSpacing = 30; // 初始最小间距（紧凑）
+  const minPadding = 25; // 节点间最小间距
   
   const positions = new Map<string, { x: number; y: number }>();
   const handlePositions = new Map<string, { target: Position; source: Position }>();
   
-  // Position root
-  positions.set(rootNode.id, { x: rootX, y: rootY });
-  handlePositions.set(rootNode.id, { target: Position.Left, source: Position.Right });
-  
-  // Get actual node height
-  const getNodeHeight = (nodeId: string): number => {
+  // Get node dimensions
+  const getNodeSize = (nodeId: string): { width: number; height: number } => {
     const node = nodeMap.get(nodeId);
-    if (!node) return nodeHeight;
-    return (node.measured?.height ?? node.data?.height ?? nodeHeight) + minVerticalGap;
+    if (!node) return { width: nodeWidth, height: nodeHeight };
+    return {
+      width: (node.measured?.width ?? (node.data?.width as number) ?? nodeWidth) as number,
+      height: (node.measured?.height ?? (node.data?.height as number) ?? nodeHeight) as number
+    };
   };
   
-  // Calculate subtree height (total vertical space needed)
-  const calcSubtreeHeight = (nodeId: string, memo = new Map<string, number>()): number => {
-    if (memo.has(nodeId)) return memo.get(nodeId)!;
+  // Get node bounds (top-left corner and size)
+  const getNodeBounds = (nodeId: string): { x: number; y: number; width: number; height: number } | null => {
+    const pos = positions.get(nodeId);
+    if (!pos) return null;
+    const size = getNodeSize(nodeId);
+    return {
+      x: pos.x - size.width / 2,
+      y: pos.y - size.height / 2,
+      width: size.width,
+      height: size.height
+    };
+  };
+  
+  // Check if two nodes overlap
+  const checkOverlap = (nodeId1: string, nodeId2: string): boolean => {
+    const bounds1 = getNodeBounds(nodeId1);
+    const bounds2 = getNodeBounds(nodeId2);
+    if (!bounds1 || !bounds2) return false;
     
+    return nodesOverlap(
+      { x: bounds1.x, y: bounds1.y },
+      { width: bounds1.width, height: bounds1.height },
+      { x: bounds2.x, y: bounds2.y },
+      { width: bounds2.width, height: bounds2.height },
+      minPadding
+    );
+  };
+  
+  // Move a node and only its direct children (not entire subtree)
+  // This keeps children close to their parent
+  const moveNodeWithDirectChildren = (nodeId: string, deltaY: number): void => {
+    const currentPos = positions.get(nodeId);
+    if (!currentPos) return;
+    
+    positions.set(nodeId, { x: currentPos.x, y: currentPos.y + deltaY });
+    
+    // Only move direct children, not entire subtree
     const kids = children.get(nodeId) || [];
+    kids.forEach(kidId => {
+      const kidPos = positions.get(kidId);
+      if (kidPos) {
+        positions.set(kidId, { x: kidPos.x, y: kidPos.y + deltaY });
+      }
+    });
+  };
+  
+  // Calculate subtree height (including all descendants)
+  const calcSubtreeHeight = (nodeId: string): number => {
+    const kids = children.get(nodeId) || [];
+    const nodeSize = getNodeSize(nodeId);
+    
     if (kids.length === 0) {
-      const h = getNodeHeight(nodeId);
-      memo.set(nodeId, h);
-      return h;
+      return nodeSize.height;
     }
     
-    // Sum of all children's heights
-    let totalChildHeight = 0;
-    kids.forEach(kid => {
-      totalChildHeight += calcSubtreeHeight(kid, memo);
+    // Sum of all children's subtree heights plus spacing
+    let totalHeight = 0;
+    kids.forEach((kidId, index) => {
+      totalHeight += calcSubtreeHeight(kidId);
+      if (index < kids.length - 1) {
+        totalHeight += baseVerticalSpacing;
+      }
     });
     
     // Return max of node height or total children height
-    const result = Math.max(getNodeHeight(nodeId), totalChildHeight);
-    memo.set(nodeId, result);
-    return result;
+    return Math.max(nodeSize.height, totalHeight);
   };
   
-  // Layout subtree with proportional space allocation
-  const layoutSubtree = (nodeId: string, x: number, startY: number, endY: number, direction: 'left' | 'right', visited: Set<string>) => {
-    if (visited.has(nodeId)) return;
-    visited.add(nodeId);
+  // Helper to get the actual bottom Y coordinate of a subtree
+  const getSubtreeBottom = (nodeId: string): number => {
+    const pos = positions.get(nodeId);
+    if (!pos) return 0;
+    const size = getNodeSize(nodeId);
+    let bottom = pos.y + size.height / 2;
     
-    // Position this node in the center of its allocated space
-    const centerY = (startY + endY) / 2;
-    positions.set(nodeId, { x, y: centerY });
+    const kids = children.get(nodeId) || [];
+    kids.forEach(kid => {
+      bottom = Math.max(bottom, getSubtreeBottom(kid));
+    });
+    
+    return bottom;
+  };
+  
+  // Initial compact layout - parent centered, children spread out from parent
+  const initialLayout = (
+    nodeId: string,
+    x: number,
+    parentY: number,
+    direction: 'left' | 'right'
+  ): number => {
+    const kids = children.get(nodeId) || [];
+    const nodeSize = getNodeSize(nodeId);
+    
+    // Position parent node first at parentY
+    positions.set(nodeId, { x, y: parentY });
     handlePositions.set(nodeId, {
       target: direction === 'left' ? Position.Right : Position.Left,
       source: direction === 'left' ? Position.Left : Position.Right
     });
     
-    const kids = children.get(nodeId) || [];
-    if (kids.length === 0) return;
+    if (kids.length === 0) {
+      return nodeSize.height;
+    }
     
-    // Calculate heights for all children
-    const childHeights = kids.map(kid => calcSubtreeHeight(kid));
-    const totalChildHeight = childHeights.reduce((sum, h) => sum + h, 0);
-    
-    // Allocate space proportionally to each child
-    const nextX = x + (direction === 'left' ? -horizontalSpacing : horizontalSpacing);
-    let currentY = startY;
-    
-    kids.forEach((kid, i) => {
-      const childHeight = childHeights[i];
-      const childSpace = (endY - startY) * (childHeight / totalChildHeight);
-      layoutSubtree(kid, nextX, currentY, currentY + childSpace, direction, visited);
-      currentY += childSpace;
+    // Calculate total height needed for all children
+    const childHeights: number[] = [];
+    kids.forEach((kidId) => {
+      childHeights.push(calcSubtreeHeight(kidId));
     });
+    
+    const totalChildrenHeight = childHeights.reduce((sum, h) => sum + h, 0) + 
+                               (kids.length > 1 ? (kids.length - 1) * baseVerticalSpacing : 0);
+    
+    // Start children from parentY - totalHeight/2 (spread out from parent center)
+    const nextX = x + (direction === 'left' ? -horizontalSpacing : horizontalSpacing);
+    let currentY = parentY - totalChildrenHeight / 2;
+    
+    kids.forEach((kidId, index) => {
+      const kidHeight = childHeights[index];
+      
+      // Position child at currentY, centered in its allocated space
+      const childCenterY = currentY + kidHeight / 2;
+      initialLayout(kidId, nextX, childCenterY, direction);
+      
+      // Move to next child position
+      currentY += kidHeight + baseVerticalSpacing;
+    });
+    
+    // Return total subtree height
+    return Math.max(nodeSize.height, totalChildrenHeight);
+  };
+  
+  // Resolve overlaps by adjusting spacing between siblings only
+  // This keeps children close to their parents and avoids moving entire subtrees
+  const resolveOverlaps = (): void => {
+    const maxIterations = 50;
+    let iteration = 0;
+    let hasOverlap = true;
+    
+    while (hasOverlap && iteration < maxIterations) {
+      hasOverlap = false;
+      iteration++;
+      
+      // Group nodes by parent (siblings)
+      const siblingsByParent = new Map<string, string[]>();
+      positions.forEach((pos, nodeId) => {
+        const parentId = parent.get(nodeId);
+        if (parentId) {
+          if (!siblingsByParent.has(parentId)) {
+            siblingsByParent.set(parentId, []);
+          }
+          siblingsByParent.get(parentId)!.push(nodeId);
+        }
+      });
+      
+      // Process siblings of each parent
+      siblingsByParent.forEach((siblingIds, parentId) => {
+        if (siblingIds.length < 2) return;
+        
+        // Sort siblings by Y position
+        siblingIds.sort((a, b) => positions.get(a)!.y - positions.get(b)!.y);
+        
+        // Check consecutive siblings for overlap
+        for (let i = 0; i < siblingIds.length - 1; i++) {
+          const id1 = siblingIds[i];
+          const id2 = siblingIds[i + 1];
+          
+          if (checkOverlap(id1, id2)) {
+            hasOverlap = true;
+            
+            const bounds1 = getNodeBounds(id1)!;
+            const bounds2 = getNodeBounds(id2)!;
+            
+            // Calculate how much to move id2 down
+            const neededSpace = (bounds1.y + bounds1.height + minPadding) - bounds2.y;
+            
+            if (neededSpace > 0) {
+              // Only move id2 and its direct children (not entire subtree)
+              moveNodeWithDirectChildren(id2, neededSpace + 5);
+              
+              // Re-sort for next iteration
+              siblingIds.sort((a, b) => positions.get(a)!.y - positions.get(b)!.y);
+            }
+          }
+        }
+      });
+      
+      // Also check nodes in the same column (for root's children and other cases)
+      const nodesByColumn = new Map<number, string[]>();
+      positions.forEach((pos, nodeId) => {
+        const colX = Math.round(pos.x / 10) * 10;
+        if (!nodesByColumn.has(colX)) {
+          nodesByColumn.set(colX, []);
+        }
+        nodesByColumn.get(colX)!.push(nodeId);
+      });
+      
+      nodesByColumn.forEach((nodeIds, colX) => {
+        if (nodeIds.length < 2) return;
+        
+        nodeIds.sort((a, b) => positions.get(a)!.y - positions.get(b)!.y);
+        
+        for (let i = 0; i < nodeIds.length - 1; i++) {
+          const id1 = nodeIds[i];
+          const id2 = nodeIds[i + 1];
+          
+          // Skip if they're parent-child (already handled above)
+          if (parent.get(id2) === id1 || parent.get(id1) === id2) continue;
+          
+          // Skip if they're siblings (already handled above)
+          if (parent.get(id1) && parent.get(id1) === parent.get(id2)) continue;
+          
+          if (checkOverlap(id1, id2)) {
+            hasOverlap = true;
+            
+            const bounds1 = getNodeBounds(id1)!;
+            const bounds2 = getNodeBounds(id2)!;
+            
+            const neededSpace = (bounds1.y + bounds1.height + minPadding) - bounds2.y;
+            
+            if (neededSpace > 0) {
+              // Only move id2 and its direct children
+              moveNodeWithDirectChildren(id2, neededSpace + 5);
+            }
+          }
+        }
+      });
+    }
+    
+    if (iteration >= maxIterations) {
+      console.warn('Could not fully resolve all overlaps after', maxIterations, 'iterations');
+    } else {
+      console.log('✓ Layout完成，无遮挡 (', iteration, '次迭代)');
+    }
   };
   
   // Get root children and determine sides
@@ -273,30 +470,87 @@ const horizontalLayout = (nodes: Node[], edges: Edge[]): { nodes: Node[], edges:
     }
   });
   
-  // Calculate total heights for both sides
-  const leftHeights = leftChildren.map(id => calcSubtreeHeight(id));
-  const rightHeights = rightChildren.map(id => calcSubtreeHeight(id));
-  const leftTotal = leftHeights.reduce((sum, h) => sum + h, 0);
-  const rightTotal = rightHeights.reduce((sum, h) => sum + h, 0);
-  const maxTotal = Math.max(leftTotal, rightTotal, 300); // At least 300px total height
+  // Position root at center
+  positions.set(rootNode.id, { x: rootX, y: rootY });
+  handlePositions.set(rootNode.id, { target: Position.Left, source: Position.Right });
   
-  // Layout left side
-  let leftY = rootY - maxTotal / 2;
-  leftChildren.forEach((childId, i) => {
-    const childHeight = leftHeights[i];
-    const childSpace = maxTotal * (childHeight / leftTotal);
-    layoutSubtree(childId, rootX - horizontalSpacing, leftY, leftY + childSpace, 'left', new Set());
-    leftY += childSpace;
-  });
+  // Layout left side - children spread out from root center
+  if (leftChildren.length > 0) {
+    // Calculate total height needed for left children
+    let leftTotalHeight = 0;
+    const leftChildHeights: number[] = [];
+    leftChildren.forEach((childId) => {
+      const height = calcSubtreeHeight(childId);
+      leftChildHeights.push(height);
+      leftTotalHeight += height;
+    });
+    leftTotalHeight += (leftChildren.length > 1 ? (leftChildren.length - 1) * baseVerticalSpacing : 0);
+    
+    const nextX = rootX - horizontalSpacing;
+    let currentY = rootY - leftTotalHeight / 2;
+    
+    leftChildren.forEach((childId, index) => {
+      const kidHeight = leftChildHeights[index];
+      const childCenterY = currentY + kidHeight / 2;
+      initialLayout(childId, nextX, childCenterY, 'left');
+      currentY += kidHeight + baseVerticalSpacing;
+    });
+  }
   
-  // Layout right side
-  let rightY = rootY - maxTotal / 2;
-  rightChildren.forEach((childId, i) => {
-    const childHeight = rightHeights[i];
-    const childSpace = maxTotal * (childHeight / rightTotal);
-    layoutSubtree(childId, rootX + horizontalSpacing, rightY, rightY + childSpace, 'right', new Set());
-    rightY += childSpace;
-  });
+  // Layout right side - children spread out from root center
+  if (rightChildren.length > 0) {
+    // Calculate total height needed for right children
+    let rightTotalHeight = 0;
+    const rightChildHeights: number[] = [];
+    rightChildren.forEach((childId) => {
+      const height = calcSubtreeHeight(childId);
+      rightChildHeights.push(height);
+      rightTotalHeight += height;
+    });
+    rightTotalHeight += (rightChildren.length > 1 ? (rightChildren.length - 1) * baseVerticalSpacing : 0);
+    
+    const nextX = rootX + horizontalSpacing;
+    let currentY = rootY - rightTotalHeight / 2;
+    
+    rightChildren.forEach((childId, index) => {
+      const kidHeight = rightChildHeights[index];
+      const childCenterY = currentY + kidHeight / 2;
+      initialLayout(childId, nextX, childCenterY, 'right');
+      currentY += kidHeight + baseVerticalSpacing;
+    });
+  }
+  
+  // Center root based on children positions (if needed)
+  if (leftChildren.length > 0 || rightChildren.length > 0) {
+    let minY = Infinity;
+    let maxY = -Infinity;
+    
+    if (leftChildren.length > 0) {
+      leftChildren.forEach(childId => {
+        const pos = positions.get(childId)!;
+        const size = getNodeSize(childId);
+        minY = Math.min(minY, pos.y - size.height / 2);
+        maxY = Math.max(maxY, pos.y + size.height / 2);
+      });
+    }
+    
+    if (rightChildren.length > 0) {
+      rightChildren.forEach(childId => {
+        const pos = positions.get(childId)!;
+        const size = getNodeSize(childId);
+        minY = Math.min(minY, pos.y - size.height / 2);
+        maxY = Math.max(maxY, pos.y + size.height / 2);
+      });
+    }
+    
+    if (minY !== Infinity && maxY !== -Infinity) {
+      const finalRootY = (minY + maxY) / 2;
+      positions.set(rootNode.id, { x: rootX, y: finalRootY });
+    }
+  }
+  
+  // Resolve overlaps by adjusting node positions
+  resolveOverlaps();
   
   // Handle orphaned nodes
   nodes.forEach(node => {
@@ -310,14 +564,13 @@ const horizontalLayout = (nodes: Node[], edges: Edge[]): { nodes: Node[], edges:
   const newNodes = nodes.map(node => {
     const pos = positions.get(node.id)!;
     const handles = handlePositions.get(node.id)!;
-    const nodeW = node.measured?.width ?? nodeWidth;
-    const nodeH = node.measured?.height ?? nodeHeight;
+    const nodeSize = getNodeSize(node.id);
     
     return {
       ...node,
       targetPosition: handles.target,
       sourcePosition: handles.source,
-      position: { x: pos.x - nodeW / 2, y: pos.y - nodeH / 2 },
+      position: { x: pos.x - nodeSize.width / 2, y: pos.y - nodeSize.height / 2 },
     };
   });
   
@@ -351,7 +604,7 @@ export const getLayoutedElements = (nodes: Node[], edges: Edge[], direction: Lay
   const dagreGraph = new dagre.graphlib.Graph();
   dagreGraph.setDefaultEdgeLabel(() => ({}));
 
-  const isHorizontal = direction === 'LR';
+  const isHorizontal = direction === 'TB' ? false : true;
   
   // Find root nodes
   const targetIds = new Set(edges.map(e => e.target));
@@ -599,8 +852,8 @@ export const getLayoutedElements = (nodes: Node[], edges: Edge[], direction: Lay
     
     if (!sourceNode || !targetNode) return edge;
     
-    let sourceHandle: string | undefined = edge.sourceHandle;
-    let targetHandle: string | undefined = edge.targetHandle;
+    let sourceHandle: string | undefined = edge.sourceHandle ?? undefined;
+    let targetHandle: string | undefined = edge.targetHandle ?? undefined;
     
     if (isHorizontal) {
       // For root node, use the original sourceHandle from edge
