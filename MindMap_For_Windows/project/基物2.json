@@ -1,0 +1,1757 @@
+{
+  "nodes": [
+    {
+      "id": "wa-nkn-5hs48gSgU1BJoV",
+      "type": "custom",
+      "position": {
+        "x": 700,
+        "y": 358.2720481974242
+      },
+      "data": {
+        "label": "基物2",
+        "level": 0,
+        "fontSize": "xlarge",
+        "nodeSize": "xlarge"
+      },
+      "selected": false,
+      "measured": {
+        "width": 200,
+        "height": 84
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "Wvs62_dyCMbzQIcUH2JsM",
+      "type": "custom",
+      "position": {
+        "x": 1075,
+        "y": -51
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "热学",
+        "level": 1,
+        "nodeSize": "medium"
+      },
+      "selected": false,
+      "measured": {
+        "width": 150,
+        "height": 56
+      },
+      "dragging": false
+    },
+    {
+      "id": "xT3DblF9wxQI5k_75HNsW",
+      "type": "custom",
+      "position": {
+        "x": 1055,
+        "y": 669
+      },
+      "data": {
+        "label": "振动与波动",
+        "level": 1
+      },
+      "selected": false,
+      "measured": {
+        "width": 190,
+        "height": 66
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "hSSDcolDIKANcEmXyEln7",
+      "type": "custom",
+      "position": {
+        "x": 375,
+        "y": 313
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "光学",
+        "width": 150,
+        "height": 60,
+        "level": 1,
+        "fontSize": "large",
+        "nodeSize": "small"
+      },
+      "selected": false,
+      "measured": {
+        "width": 150,
+        "height": 60
+      },
+      "dragging": false
+    },
+    {
+      "id": "Na-MNPYLQrasqJ_S1mpCB",
+      "type": "custom",
+      "position": {
+        "x": 375,
+        "y": 798
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "量子力学",
+        "level": 1,
+        "fontSize": "large",
+        "nodeSize": "medium"
+      },
+      "selected": false,
+      "measured": {
+        "width": 150,
+        "height": 56
+      },
+      "dragging": false
+    },
+    {
+      "id": "T59LGHoE5OKrFSZ4h19Am",
+      "type": "custom",
+      "position": {
+        "x": 1420,
+        "y": 412.5
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "振动",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      }
+    },
+    {
+      "id": "PFIFbK93boij6ue8bP5RM",
+      "type": "custom",
+      "position": {
+        "x": 1420,
+        "y": 936
+      },
+      "data": {
+        "label": "波动",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "9HuVaqEsPq-szVkdDxtGa",
+      "type": "custom",
+      "position": {
+        "x": 1785,
+        "y": 893.5
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "多普勒效应",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 40
+      },
+      "dragging": false
+    },
+    {
+      "id": "5VptS7fV3jMnbLK0Ck3hV",
+      "type": "custom",
+      "position": {
+        "x": 2135,
+        "y": 749.5
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "接收器动",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 40
+      }
+    },
+    {
+      "id": "tQ92yO9Wce0Y0AmImq83j",
+      "type": "custom",
+      "position": {
+        "x": 2455.5,
+        "y": 713
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "向着波源：$\\nu _R=\\frac{u+\\upsilon _R}{u}\\nu _S\n$",
+        "level": 5
+      },
+      "selected": false,
+      "measured": {
+        "width": 190,
+        "height": 41
+      },
+      "dragging": false
+    },
+    {
+      "id": "L-iDXh7kE6NFI91et3aF_",
+      "type": "custom",
+      "position": {
+        "x": 2135,
+        "y": 892.5
+      },
+      "data": {
+        "label": "波源动",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 40
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "GFklSQwMxXYFM_3X69Mq7",
+      "type": "custom",
+      "position": {
+        "x": 2455.5,
+        "y": 784
+      },
+      "data": {
+        "label": "远离波源：$\\nu _R=\\frac{u-\\upsilon _R}{u}\\nu _S$",
+        "level": 5
+      },
+      "selected": false,
+      "measured": {
+        "width": 190,
+        "height": 41
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "d7WrBVxFa5MceA6eJ5mCg",
+      "type": "custom",
+      "position": {
+        "x": 2449,
+        "y": 855
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "向着接收器：$\\nu _R=\\frac{u}{u-\\upsilon _S}\\nu _S$",
+        "level": 5
+      },
+      "selected": false,
+      "measured": {
+        "width": 203,
+        "height": 43
+      }
+    },
+    {
+      "id": "fwt7TEmBkFJ_vn_IY3R6a",
+      "type": "custom",
+      "position": {
+        "x": 2449,
+        "y": 927
+      },
+      "data": {
+        "label": "远离接收器：$\\nu _R=\\frac{u}{u+\\upsilon _S}\\nu _S$",
+        "level": 5
+      },
+      "selected": false,
+      "measured": {
+        "width": 203,
+        "height": 43
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "kT2FVUK7LQ8ZxhSq6GOve",
+      "type": "custom",
+      "position": {
+        "x": 2135,
+        "y": 1036.5
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "两者都动",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 40
+      },
+      "dragging": false
+    },
+    {
+      "id": "aLIP2ZYM45Nj8VlU0ZwPf",
+      "type": "custom",
+      "position": {
+        "x": 2455.5,
+        "y": 999
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "相向运动：$\\nu _R=\\frac{u+\\upsilon _R}{u-\\upsilon _S}\\nu _S$",
+        "level": 5
+      },
+      "selected": false,
+      "measured": {
+        "width": 190,
+        "height": 43
+      },
+      "dragging": false
+    },
+    {
+      "id": "vod0rnYwKhDt9jCnHnSUE",
+      "type": "custom",
+      "position": {
+        "x": 2455.5,
+        "y": 1071
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "彼此离开：$\\nu _R=\\frac{u-\\upsilon _R}{u+\\upsilon _S}\\nu _S$",
+        "level": 5
+      },
+      "selected": false,
+      "measured": {
+        "width": 190,
+        "height": 43
+      }
+    },
+    {
+      "id": "_PfEc9h6HSAQViO5zUPID",
+      "type": "custom",
+      "position": {
+        "x": 1719,
+        "y": 237.5
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "知道初速度$\\nu _0$，初始位移$x_0$,角速度$\\omega_0$",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 263,
+        "height": 41
+      },
+      "dragging": false
+    },
+    {
+      "id": "OWUpi5LnV86TCjgXbxrme",
+      "type": "custom",
+      "position": {
+        "x": 2123,
+        "y": 193
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "$A=\\sqrt{x_0^2+\\left( \\frac{v_0}{\\omega} \\right) ^2}$",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 155,
+        "height": 51
+      },
+      "dragging": false
+    },
+    {
+      "id": "dCJxGbjWkhN145B-8W-3L",
+      "type": "custom",
+      "position": {
+        "x": 2116,
+        "y": 273
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "$\\varphi =\\arctan \\left( -\\frac{v_0}{\\omega x_0} \\right)$",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 169,
+        "height": 50
+      },
+      "dragging": false
+    },
+    {
+      "id": "5o9E-OVX00Dd38j3RakBH",
+      "type": "custom",
+      "position": {
+        "x": 1785,
+        "y": 498.5
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "振动的合成",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 40
+      },
+      "dragging": false
+    },
+    {
+      "id": "SMXpNL0shOw6-L5G-q0_l",
+      "type": "custom",
+      "position": {
+        "x": 2109.5,
+        "y": 353
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "结合矢量三角形记忆公式",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 182,
+        "height": 40
+      },
+      "dragging": false
+    },
+    {
+      "id": "I_A1b_YgK1-unQUYccRH4",
+      "type": "custom",
+      "position": {
+        "x": 1785,
+        "y": 1157
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "波函数",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 40
+      }
+    },
+    {
+      "id": "E6XrPjC-y_Hwhr2EdgHmJ",
+      "type": "custom",
+      "position": {
+        "x": 2079.5,
+        "y": 1156
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "$y\\left( x,t \\right) =A\\cos \\left( \\omega t-kx+\\varphi \\right) $",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 242,
+        "height": 41
+      },
+      "dragging": false
+    },
+    {
+      "id": "_hAGqu9mlN4-yCen4OMDJ",
+      "type": "custom",
+      "position": {
+        "x": 2485,
+        "y": 1143
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "k：波数\n\n$k=\\frac{2\\pi}{\\lambda}$",
+        "level": 5
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 67
+      }
+    },
+    {
+      "id": "dcjpDgdlcgYYIT2oEfOz0",
+      "type": "custom",
+      "position": {
+        "x": 1980,
+        "y": 422
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "相互垂直的谐振动的合成\n\n设两个简谐振动分别为：\n\n沿x方向：$x = A \\cos(\\omega t + \\varphi_1)$\n     沿y方向：$y = B \\cos(\\omega t + \\varphi_2)$\n\n其中A、B为振幅，ω为相同角频率，$\\varphi_1$、$\\varphi_2$为初相位。\n合成轨迹方程\n通过消除时间t，可得到轨迹方程（椭圆方程）：\n$$\\boxed{\\left( \\frac{x}{A} \\right)^2 + \\left( \\frac{y}{B} \\right)^2 - 2 \\frac{x y}{A B} \\cos\\delta = \\sin^2 \\delta}$$\n其中$\\delta = \\varphi_2 - \\varphi_1$ 为两振动的相位差。\n\n$\\delta$为$+\\frac{\\pi}{2}$时，右旋\n\n$\\delta$为$-\\frac{\\pi}{2}$,左旋",
+        "width": 600,
+        "height": 261,
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 600,
+        "height": 261
+      },
+      "dragging": false
+    },
+    {
+      "id": "i8oWoJBXsalsnfHZ1sqR0",
+      "type": "custom",
+      "position": {
+        "x": 20,
+        "y": 63
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "双缝干涉",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      },
+      "dragging": false
+    },
+    {
+      "id": "MqXZj3S87NGp7rQUDgFRQ",
+      "type": "custom",
+      "position": {
+        "x": -333.5,
+        "y": 32.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "明纹：\n$x_{}=\\pm k\\frac{\\lambda D}{d}\\quad $",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 168,
+        "height": 41
+      },
+      "dragging": false
+    },
+    {
+      "id": "xMuwKcRngZwcpzyNCZPly",
+      "type": "custom",
+      "position": {
+        "x": -359.5,
+        "y": 103.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "暗纹：$x_{}=\\pm \\left( 2k+1 \\right) \\frac{\\lambda D}{2d}\\quad $",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 220,
+        "height": 41
+      },
+      "dragging": false
+    },
+    {
+      "id": "Ui-JEVhAboOjYErrffdk0",
+      "type": "custom",
+      "position": {
+        "x": 20,
+        "y": 205
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "光波的叠加",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      },
+      "dragging": false
+    },
+    {
+      "id": "ndSDWTCz4kCdX9mqFLgAq",
+      "type": "custom",
+      "position": {
+        "x": -379,
+        "y": 174.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "相干：$I=I_1+I_2+2\\sqrt{I_1I_2}\\cos \\delta $",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 259,
+        "height": 41
+      },
+      "dragging": false
+    },
+    {
+      "id": "jm3fFnUe16iytPgmLmUYS",
+      "type": "custom",
+      "position": {
+        "x": -332,
+        "y": 245.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "非相干：$I=I_1+I_2$",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 165,
+        "height": 41
+      },
+      "dragging": false
+    },
+    {
+      "id": "BkEgyx7tuwQEvvufPED-w",
+      "type": "custom",
+      "position": {
+        "x": 1420,
+        "y": -210
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "功，热量",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      },
+      "dragging": false
+    },
+    {
+      "id": "GJu0Hd4iJtvh-j4yOWNIS",
+      "type": "custom",
+      "position": {
+        "x": 1654.5,
+        "y": -204
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "功与热量都是过程量，不给给定具体过程则无法判断其正负",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 392,
+        "height": 40
+      },
+      "dragging": false
+    },
+    {
+      "id": "4WX5wMPQ_Hq4AaR0MvC6I",
+      "type": "custom",
+      "position": {
+        "x": 20,
+        "y": 800
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "氢原子",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      },
+      "dragging": false
+    },
+    {
+      "id": "O5fDjT9NDOEi14XM1j163",
+      "type": "custom",
+      "position": {
+        "x": -317,
+        "y": 683.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "基态：$E=-\\frac{hc}{\\lambda}$",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 135,
+        "height": 41
+      },
+      "dragging": false
+    },
+    {
+      "id": "EXyo-guJKVNbM82Q6qH1y",
+      "type": "custom",
+      "position": {
+        "x": -317,
+        "y": 754.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "$E_n=-\\frac{E_1}{n^2}$\n\n$E_1=-13.6eV$",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 135,
+        "height": 69
+      },
+      "dragging": false
+    },
+    {
+      "id": "OsrUm9lqNxVl0GKWDRCEB",
+      "type": "custom",
+      "position": {
+        "x": -365.5,
+        "y": 853.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "自旋角动量:$L_S=\\sqrt{s\\left( s+1 \\right)}\\hbar $",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 232,
+        "height": 42
+      },
+      "dragging": false
+    },
+    {
+      "id": "Vt5jZGXkg1uFJmuqmamzJ",
+      "type": "custom",
+      "position": {
+        "x": -363.5,
+        "y": 925.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "轨道角动量：$L=\\sqrt{l\\left( l+1 \\right)}\\hbar $",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 228,
+        "height": 42
+      },
+      "dragging": false
+    },
+    {
+      "id": "LsKZ8Rw3sIs1C8VI5u4jb",
+      "type": "custom",
+      "position": {
+        "x": 20,
+        "y": 316.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "干涉现象的应用",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      },
+      "dragging": false
+    },
+    {
+      "id": "Ymji3TH0PpIvVvhsqhBmi",
+      "type": "custom",
+      "position": {
+        "x": -315,
+        "y": 322.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "劈尖干涉",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 40
+      },
+      "dragging": false
+    },
+    {
+      "id": "f_omuVYzTQTBkGnTJHbJP",
+      "type": "custom",
+      "position": {
+        "x": -695,
+        "y": 321.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "相邻条纹的间距：$l=\\frac{\\lambda}{2n\\theta}$",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 191,
+        "height": 41
+      }
+    },
+    {
+      "id": "i2UdGwZhpZYqDkGB8EKbG",
+      "type": "custom",
+      "position": {
+        "x": 20,
+        "y": 401.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "衍射\n",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      }
+    },
+    {
+      "id": "EL93Xlo7ElDtkWyuthL6y",
+      "type": "custom",
+      "position": {
+        "x": -630,
+        "y": 397.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "惠更斯--菲涅尔原理：从同一波面上各点发出的子波都是相干的，在各子波传播到的空间的某一点上，该点的光强是所有到达该点的子波==相干叠加==的结果",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 600,
+        "height": 60
+      }
+    },
+    {
+      "id": "PbhCWvcaomSMTU4rx0LZn",
+      "type": "custom",
+      "position": {
+        "x": 20,
+        "y": 544.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "偏振",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      },
+      "dragging": false
+    },
+    {
+      "id": "Ygmhmriv6sNcCLJVulllY",
+      "type": "custom",
+      "position": {
+        "x": -315,
+        "y": 486.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "$sinc=\\frac{1}{n}$\n\nc:临界角",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 67
+      }
+    },
+    {
+      "id": "fHmK4EAT1M_Ax7ho9AmnS",
+      "type": "custom",
+      "position": {
+        "x": -315,
+        "y": 583.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "$tan\\theta_B = \\frac{n_2}{n_1}$\n\n一般$n_1=1$",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 70
+      },
+      "dragging": false
+    },
+    {
+      "id": "SIqpYB_2t75bTPgUxLOtD",
+      "type": "custom",
+      "position": {
+        "x": 1420,
+        "y": -8.5
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "气体动理论",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      },
+      "dragging": false
+    },
+    {
+      "id": "Fkp7nBGhx-7ycMTyi76X4",
+      "type": "custom",
+      "position": {
+        "x": 1785,
+        "y": -2.5
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "气体分子的速率",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 40
+      }
+    },
+    {
+      "id": "ABGSqtiYoAyLxPJzp4G-8",
+      "type": "custom",
+      "position": {
+        "x": 1977.5,
+        "y": -129
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "最概然速率：$v_p=\\sqrt{\\frac{2kT}{m}}=\\sqrt{\\frac{2RT}{M}}$\n\n速度分布函数 $f(v)$ 取极大值时的速率，即分子最可能具有的速度。",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 446,
+        "height": 79
+      },
+      "dragging": false
+    },
+    {
+      "id": "lTWEhB3l2-bK2Scr_1CVI",
+      "type": "custom",
+      "position": {
+        "x": 2079,
+        "y": -21
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "平均速率： $\\bar{v}=\\sqrt{\\frac{8kT}{\\pi m}}=\\sqrt{\\frac{8RT}{\\pi M}}$\n\n所有分子速率的统计平均值",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 242,
+        "height": 77
+      },
+      "dragging": false
+    },
+    {
+      "id": "xRo_BVk5LjXsia3dI_PAe",
+      "type": "custom",
+      "position": {
+        "x": 1958,
+        "y": 85
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "方均根速率：$v_{rms}=\\sqrt{\\frac{3kT}{m}}=\\sqrt{\\frac{3RT}{M}}$\n\n反映分子动能平均值（因为 $\\frac{1}{2} m v_{rms}^2 = \\frac{3}{2} kT$），常用于理想气体压强公式",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 485,
+        "height": 79
+      },
+      "dragging": false
+    },
+    {
+      "id": "ECBx98--LCa_MQoEmnru_",
+      "type": "custom",
+      "position": {
+        "x": 1050,
+        "y": 458.2720481974242
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "data": {
+        "label": "just test\n",
+        "level": 1
+      },
+      "selected": false,
+      "measured": {
+        "width": 190,
+        "height": 66
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "ewa-nkn-5hs48gSgU1BJoV-Wvs62_dyCMbzQIcUH2JsM",
+      "source": "wa-nkn-5hs48gSgU1BJoV",
+      "target": "Wvs62_dyCMbzQIcUH2JsM",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "ewa-nkn-5hs48gSgU1BJoV-xT3DblF9wxQI5k_75HNsW",
+      "source": "wa-nkn-5hs48gSgU1BJoV",
+      "target": "xT3DblF9wxQI5k_75HNsW",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "ewa-nkn-5hs48gSgU1BJoV-hSSDcolDIKANcEmXyEln7",
+      "source": "wa-nkn-5hs48gSgU1BJoV",
+      "target": "hSSDcolDIKANcEmXyEln7",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "ewa-nkn-5hs48gSgU1BJoV-Na-MNPYLQrasqJ_S1mpCB",
+      "source": "wa-nkn-5hs48gSgU1BJoV",
+      "target": "Na-MNPYLQrasqJ_S1mpCB",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "exT3DblF9wxQI5k_75HNsW-T59LGHoE5OKrFSZ4h19Am",
+      "source": "xT3DblF9wxQI5k_75HNsW",
+      "target": "T59LGHoE5OKrFSZ4h19Am",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "exT3DblF9wxQI5k_75HNsW-PFIFbK93boij6ue8bP5RM",
+      "source": "xT3DblF9wxQI5k_75HNsW",
+      "target": "PFIFbK93boij6ue8bP5RM",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "ePFIFbK93boij6ue8bP5RM-9HuVaqEsPq-szVkdDxtGa",
+      "source": "PFIFbK93boij6ue8bP5RM",
+      "target": "9HuVaqEsPq-szVkdDxtGa",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "e9HuVaqEsPq-szVkdDxtGa-5VptS7fV3jMnbLK0Ck3hV",
+      "source": "9HuVaqEsPq-szVkdDxtGa",
+      "target": "5VptS7fV3jMnbLK0Ck3hV",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "e5VptS7fV3jMnbLK0Ck3hV-tQ92yO9Wce0Y0AmImq83j",
+      "source": "5VptS7fV3jMnbLK0Ck3hV",
+      "target": "tQ92yO9Wce0Y0AmImq83j",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "e9HuVaqEsPq-szVkdDxtGa-L-iDXh7kE6NFI91et3aF_",
+      "source": "9HuVaqEsPq-szVkdDxtGa",
+      "target": "L-iDXh7kE6NFI91et3aF_",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e5VptS7fV3jMnbLK0Ck3hV-GFklSQwMxXYFM_3X69Mq7",
+      "source": "5VptS7fV3jMnbLK0Ck3hV",
+      "target": "GFklSQwMxXYFM_3X69Mq7",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eL-iDXh7kE6NFI91et3aF_-d7WrBVxFa5MceA6eJ5mCg",
+      "source": "L-iDXh7kE6NFI91et3aF_",
+      "target": "d7WrBVxFa5MceA6eJ5mCg",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "eL-iDXh7kE6NFI91et3aF_-fwt7TEmBkFJ_vn_IY3R6a",
+      "source": "L-iDXh7kE6NFI91et3aF_",
+      "target": "fwt7TEmBkFJ_vn_IY3R6a",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e9HuVaqEsPq-szVkdDxtGa-kT2FVUK7LQ8ZxhSq6GOve",
+      "source": "9HuVaqEsPq-szVkdDxtGa",
+      "target": "kT2FVUK7LQ8ZxhSq6GOve",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "ekT2FVUK7LQ8ZxhSq6GOve-aLIP2ZYM45Nj8VlU0ZwPf",
+      "source": "kT2FVUK7LQ8ZxhSq6GOve",
+      "target": "aLIP2ZYM45Nj8VlU0ZwPf",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "ekT2FVUK7LQ8ZxhSq6GOve-vod0rnYwKhDt9jCnHnSUE",
+      "source": "kT2FVUK7LQ8ZxhSq6GOve",
+      "target": "vod0rnYwKhDt9jCnHnSUE",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "eT59LGHoE5OKrFSZ4h19Am-_PfEc9h6HSAQViO5zUPID",
+      "source": "T59LGHoE5OKrFSZ4h19Am",
+      "target": "_PfEc9h6HSAQViO5zUPID",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "e_PfEc9h6HSAQViO5zUPID-OWUpi5LnV86TCjgXbxrme",
+      "source": "_PfEc9h6HSAQViO5zUPID",
+      "target": "OWUpi5LnV86TCjgXbxrme",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "e_PfEc9h6HSAQViO5zUPID-dCJxGbjWkhN145B-8W-3L",
+      "source": "_PfEc9h6HSAQViO5zUPID",
+      "target": "dCJxGbjWkhN145B-8W-3L",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "eT59LGHoE5OKrFSZ4h19Am-5o9E-OVX00Dd38j3RakBH",
+      "source": "T59LGHoE5OKrFSZ4h19Am",
+      "target": "5o9E-OVX00Dd38j3RakBH",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "e5o9E-OVX00Dd38j3RakBH-SMXpNL0shOw6-L5G-q0_l",
+      "source": "5o9E-OVX00Dd38j3RakBH",
+      "target": "SMXpNL0shOw6-L5G-q0_l",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "ePFIFbK93boij6ue8bP5RM-I_A1b_YgK1-unQUYccRH4",
+      "source": "PFIFbK93boij6ue8bP5RM",
+      "target": "I_A1b_YgK1-unQUYccRH4",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "eI_A1b_YgK1-unQUYccRH4-E6XrPjC-y_Hwhr2EdgHmJ",
+      "source": "I_A1b_YgK1-unQUYccRH4",
+      "target": "E6XrPjC-y_Hwhr2EdgHmJ",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "eE6XrPjC-y_Hwhr2EdgHmJ-_hAGqu9mlN4-yCen4OMDJ",
+      "source": "E6XrPjC-y_Hwhr2EdgHmJ",
+      "target": "_hAGqu9mlN4-yCen4OMDJ",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "e5o9E-OVX00Dd38j3RakBH-dcjpDgdlcgYYIT2oEfOz0",
+      "source": "5o9E-OVX00Dd38j3RakBH",
+      "target": "dcjpDgdlcgYYIT2oEfOz0",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "ehSSDcolDIKANcEmXyEln7-i8oWoJBXsalsnfHZ1sqR0",
+      "source": "hSSDcolDIKANcEmXyEln7",
+      "target": "i8oWoJBXsalsnfHZ1sqR0",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "ei8oWoJBXsalsnfHZ1sqR0-MqXZj3S87NGp7rQUDgFRQ",
+      "source": "i8oWoJBXsalsnfHZ1sqR0",
+      "target": "MqXZj3S87NGp7rQUDgFRQ",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "ei8oWoJBXsalsnfHZ1sqR0-xMuwKcRngZwcpzyNCZPly",
+      "source": "i8oWoJBXsalsnfHZ1sqR0",
+      "target": "xMuwKcRngZwcpzyNCZPly",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "ehSSDcolDIKANcEmXyEln7-Ui-JEVhAboOjYErrffdk0",
+      "source": "hSSDcolDIKANcEmXyEln7",
+      "target": "Ui-JEVhAboOjYErrffdk0",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "eUi-JEVhAboOjYErrffdk0-ndSDWTCz4kCdX9mqFLgAq",
+      "source": "Ui-JEVhAboOjYErrffdk0",
+      "target": "ndSDWTCz4kCdX9mqFLgAq",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "eUi-JEVhAboOjYErrffdk0-jm3fFnUe16iytPgmLmUYS",
+      "source": "Ui-JEVhAboOjYErrffdk0",
+      "target": "jm3fFnUe16iytPgmLmUYS",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "eWvs62_dyCMbzQIcUH2JsM-BkEgyx7tuwQEvvufPED-w",
+      "source": "Wvs62_dyCMbzQIcUH2JsM",
+      "target": "BkEgyx7tuwQEvvufPED-w",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "eBkEgyx7tuwQEvvufPED-w-GJu0Hd4iJtvh-j4yOWNIS",
+      "source": "BkEgyx7tuwQEvvufPED-w",
+      "target": "GJu0Hd4iJtvh-j4yOWNIS",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "eNa-MNPYLQrasqJ_S1mpCB-4WX5wMPQ_Hq4AaR0MvC6I",
+      "source": "Na-MNPYLQrasqJ_S1mpCB",
+      "target": "4WX5wMPQ_Hq4AaR0MvC6I",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "e4WX5wMPQ_Hq4AaR0MvC6I-O5fDjT9NDOEi14XM1j163",
+      "source": "4WX5wMPQ_Hq4AaR0MvC6I",
+      "target": "O5fDjT9NDOEi14XM1j163",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "e4WX5wMPQ_Hq4AaR0MvC6I-EXyo-guJKVNbM82Q6qH1y",
+      "source": "4WX5wMPQ_Hq4AaR0MvC6I",
+      "target": "EXyo-guJKVNbM82Q6qH1y",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "e4WX5wMPQ_Hq4AaR0MvC6I-OsrUm9lqNxVl0GKWDRCEB",
+      "source": "4WX5wMPQ_Hq4AaR0MvC6I",
+      "target": "OsrUm9lqNxVl0GKWDRCEB",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "e4WX5wMPQ_Hq4AaR0MvC6I-Vt5jZGXkg1uFJmuqmamzJ",
+      "source": "4WX5wMPQ_Hq4AaR0MvC6I",
+      "target": "Vt5jZGXkg1uFJmuqmamzJ",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "ehSSDcolDIKANcEmXyEln7-LsKZ8Rw3sIs1C8VI5u4jb",
+      "source": "hSSDcolDIKANcEmXyEln7",
+      "target": "LsKZ8Rw3sIs1C8VI5u4jb",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "eLsKZ8Rw3sIs1C8VI5u4jb-Ymji3TH0PpIvVvhsqhBmi",
+      "source": "LsKZ8Rw3sIs1C8VI5u4jb",
+      "target": "Ymji3TH0PpIvVvhsqhBmi",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "eYmji3TH0PpIvVvhsqhBmi-f_omuVYzTQTBkGnTJHbJP",
+      "source": "Ymji3TH0PpIvVvhsqhBmi",
+      "target": "f_omuVYzTQTBkGnTJHbJP",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "ehSSDcolDIKANcEmXyEln7-i2UdGwZhpZYqDkGB8EKbG",
+      "source": "hSSDcolDIKANcEmXyEln7",
+      "target": "i2UdGwZhpZYqDkGB8EKbG",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "ei2UdGwZhpZYqDkGB8EKbG-EL93Xlo7ElDtkWyuthL6y",
+      "source": "i2UdGwZhpZYqDkGB8EKbG",
+      "target": "EL93Xlo7ElDtkWyuthL6y",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "ehSSDcolDIKANcEmXyEln7-PbhCWvcaomSMTU4rx0LZn",
+      "source": "hSSDcolDIKANcEmXyEln7",
+      "target": "PbhCWvcaomSMTU4rx0LZn",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "ePbhCWvcaomSMTU4rx0LZn-Ygmhmriv6sNcCLJVulllY",
+      "source": "PbhCWvcaomSMTU4rx0LZn",
+      "target": "Ygmhmriv6sNcCLJVulllY",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "ePbhCWvcaomSMTU4rx0LZn-fHmK4EAT1M_Ax7ho9AmnS",
+      "source": "PbhCWvcaomSMTU4rx0LZn",
+      "target": "fHmK4EAT1M_Ax7ho9AmnS",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "eWvs62_dyCMbzQIcUH2JsM-SIqpYB_2t75bTPgUxLOtD",
+      "source": "Wvs62_dyCMbzQIcUH2JsM",
+      "target": "SIqpYB_2t75bTPgUxLOtD",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "eSIqpYB_2t75bTPgUxLOtD-Fkp7nBGhx-7ycMTyi76X4",
+      "source": "SIqpYB_2t75bTPgUxLOtD",
+      "target": "Fkp7nBGhx-7ycMTyi76X4",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "eFkp7nBGhx-7ycMTyi76X4-ABGSqtiYoAyLxPJzp4G-8",
+      "source": "Fkp7nBGhx-7ycMTyi76X4",
+      "target": "ABGSqtiYoAyLxPJzp4G-8",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "eFkp7nBGhx-7ycMTyi76X4-lTWEhB3l2-bK2Scr_1CVI",
+      "source": "Fkp7nBGhx-7ycMTyi76X4",
+      "target": "lTWEhB3l2-bK2Scr_1CVI",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "eFkp7nBGhx-7ycMTyi76X4-xRo_BVk5LjXsia3dI_PAe",
+      "source": "Fkp7nBGhx-7ycMTyi76X4",
+      "target": "xRo_BVk5LjXsia3dI_PAe",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "ewa-nkn-5hs48gSgU1BJoV-ECBx98--LCa_MQoEmnru_",
+      "source": "wa-nkn-5hs48gSgU1BJoV",
+      "target": "ECBx98--LCa_MQoEmnru_",
+      "sourceHandle": "right",
+      "targetHandle": "left",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    }
+  ]
+}

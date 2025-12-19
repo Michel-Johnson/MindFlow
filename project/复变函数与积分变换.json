@@ -1,0 +1,2008 @@
+{
+  "nodes": [
+    {
+      "id": "yEzO9xuPSwSNjShSTzNC9",
+      "type": "custom",
+      "position": {
+        "x": 1060,
+        "y": 95.5
+      },
+      "data": {
+        "label": "解析函数🧐",
+        "level": 1,
+        "fontSize": "large",
+        "nodeSize": "large"
+      },
+      "selected": false,
+      "measured": {
+        "width": 180,
+        "height": 66
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right",
+      "dragging": false
+    },
+    {
+      "id": "wa-nkn-5hs48gSgU1BJoV",
+      "type": "custom",
+      "position": {
+        "x": 691,
+        "y": 596
+      },
+      "data": {
+        "label": "复变函数与积分变换\n",
+        "level": 0,
+        "fontSize": "xlarge",
+        "nodeSize": "xlarge"
+      },
+      "selected": false,
+      "measured": {
+        "width": 326,
+        "height": 84
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "L5JyExa0uIPKbjw8fFXEw",
+      "type": "custom",
+      "position": {
+        "x": 1200,
+        "y": -501
+      },
+      "data": {
+        "label": "定义： 若函数 $f(z)$ 在点 $z_0$ 的某个邻域内可导，则称 $f(z)$ 在点 $z_0$ 解析。\n\n$z_0$称 $f(z)$ 的解析点：若函数 $f(z)$ 在区域 $D$ 内每一点都解析，则称 $f(z)$ 在区域 $D$ 内解析；或称 $f(z)$ 是区域 $D$ 内的解析函数。",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 600,
+        "height": 110
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "pnkm675uq-Kp4yd5R-Wpk",
+      "type": "custom",
+      "position": {
+        "x": 1708.5,
+        "y": -469
+      },
+      "data": {
+        "label": "注意，在点z0解析要求fz在z0的某个邻域内可导",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 326,
+        "height": 40
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "LcvevZ_S4j9iT2pRjAXFz",
+      "type": "custom",
+      "position": {
+        "x": 1313,
+        "y": -372
+      },
+      "data": {
+        "label": "奇点：若函数f(z)在点z_0不解析，则称z0为f(z)的奇点",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 422,
+        "height": 52
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "m9FgtEPkzxwHZNvN0iYtR",
+      "type": "custom",
+      "position": {
+        "x": 1740.5,
+        "y": -366
+      },
+      "data": {
+        "label": "如果f(z)在z0处无定义，z0也是奇点",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 252,
+        "height": 40
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "Ssa8Ke5Obp47Day_rhtny",
+      "type": "custom",
+      "position": {
+        "x": 1411,
+        "y": -266.5
+      },
+      "data": {
+        "label": "Cauchy-Riemann方程",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 199,
+        "height": 52
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "WEsJrqgCJbQUmWtbxNywJ",
+      "type": "custom",
+      "position": {
+        "x": 1750.5,
+        "y": -295
+      },
+      "data": {
+        "label": "公式：$\\frac{\\partial u}{\\partial x} = \\frac{\\partial v}{\\partial y}, \\quad \\frac{\\partial u}{\\partial y} = -\\frac{\\partial v}{\\partial x}.$",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 228,
+        "height": 43
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "DLGjH9UPG7fZS-MlXDtpA",
+      "type": "custom",
+      "position": {
+        "x": 1662,
+        "y": -226
+      },
+      "data": {
+        "label": "f(z)在点z可导的充要条件是u,v在z处可微，且满足C-R方程！！！",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 434,
+        "height": 40
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "m5uZJfPGcXTczArZcnupZ",
+      "type": "custom",
+      "position": {
+        "x": 1425,
+        "y": 272.5
+      },
+      "data": {
+        "label": "初等解析函数",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "jYspvnl_HxYU3VeG24z-g",
+      "type": "custom",
+      "position": {
+        "x": 1790,
+        "y": -161
+      },
+      "data": {
+        "label": "指数函数",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 40
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "FF1mmFSMcRiFWeTXbNOih",
+      "type": "custom",
+      "position": {
+        "x": 2140,
+        "y": -161
+      },
+      "data": {
+        "label": "欧拉公式",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 40
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "wMhQ0b_jyTDx7cpGkiTHD",
+      "type": "custom",
+      "position": {
+        "x": 1790,
+        "y": -25
+      },
+      "data": {
+        "label": "对数函数",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 40
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "t9Z0-MeNFc9V71rostP24",
+      "type": "custom",
+      "position": {
+        "x": 2040.5,
+        "y": -96
+      },
+      "data": {
+        "label": "对数函数为一个无穷多值的函数，每两个值之间差$2k\\pi i$",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 369,
+        "height": 41
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "zUdWsQfFERy9Kwe1IjXUa",
+      "type": "custom",
+      "position": {
+        "x": 1790,
+        "y": 111
+      },
+      "data": {
+        "label": "幂函数",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 40
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "ixDrFbVdxFNqEFbSiAw2Q",
+      "type": "custom",
+      "position": {
+        "x": 2028,
+        "y": -29
+      },
+      "data": {
+        "label": "$ ln z = \\ln |z| + i \\arg z, \\quad -\\pi < \\arg z \\leq \\pi. $\n\n$ Ln z = \\ln z + 2k\\pi i \\quad (k \\text{ 为任意整数}). $\n",
+        "width": 344,
+        "height": 110,
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 344,
+        "height": 110
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "HWxBJORX4nEJn_1kl3bmV",
+      "type": "custom",
+      "position": {
+        "x": 2476.5,
+        "y": -26
+      },
+      "data": {
+        "label": "\n$ lnz称为Lnz的主值$",
+        "level": 5
+      },
+      "selected": false,
+      "measured": {
+        "width": 167,
+        "height": 41
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "ZTeCsOTVIuqLMslkPxdOZ",
+      "type": "custom",
+      "position": {
+        "x": 2402,
+        "y": 41
+      },
+      "data": {
+        "label": "$Lnz^n=nLnz$一般不成立，因为$Lnz$为无穷集合",
+        "level": 5
+      },
+      "selected": false,
+      "measured": {
+        "width": 342,
+        "height": 41
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "iieBvBFleA2z5Ax0yldyc",
+      "type": "custom",
+      "position": {
+        "x": 1790,
+        "y": 235
+      },
+      "data": {
+        "label": "三角函数",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 40
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "ihDAQT6SnbPf2Awh8SVqX",
+      "type": "custom",
+      "position": {
+        "x": 2111.5,
+        "y": 176
+      },
+      "data": {
+        "label": "公式：\n\n$ \\sin z = \\frac{e^{iz} - e^{-iz}}{2i}, \\quad z \\in \\mathbb{C}. $\n\n$ \\cos z = \\frac{e^{iz} + e^{-iz}}{2}, \\quad z \\in \\mathbb{C}. $\n\n",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 203,
+        "height": 99
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "S00m3XYxh-ym1EAv_wqTR",
+      "type": "custom",
+      "position": {
+        "x": 2065,
+        "y": 294
+      },
+      "data": {
+        "label": "在复数范围内：|sinz|<=1,|cosz|<=1不再成立",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 311,
+        "height": 40
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "mNq8SY8rk0q6mTUXirKf5",
+      "type": "custom",
+      "position": {
+        "x": 1790,
+        "y": 408.5
+      },
+      "data": {
+        "label": "双曲函数",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 40
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "kjn125T-w1_OmSn5c0hTm",
+      "type": "custom",
+      "position": {
+        "x": 2042.5,
+        "y": 359
+      },
+      "data": {
+        "label": "公式：\n\n$ \\sinh z = \\frac{e^z - e^{-z}}{2}, \\quad \\cosh z = \\frac{e^z + e^{-z}}{2}, \n$\n\n$ \\tanh z = \\frac{\\sinh z}{\\cosh z}, \\quad \\coth z = \\frac{\\cosh z}{\\sinh z}, $\n\n\n$ \\operatorname{sech} z = \\frac{1}{\\cosh z}, \\quad \\operatorname{csch} z = \\frac{1}{\\sinh z}. $\n\n",
+        "width": 315,
+        "height": 134,
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 315,
+        "height": 134
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "S4kPRI08D2dHzUDaF6hvK",
+      "type": "custom",
+      "position": {
+        "x": 1770.5,
+        "y": 620.5
+      },
+      "data": {
+        "label": "连续、可导、解析的关系",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 182,
+        "height": 40
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "lO5_wpfXxosAzfbsvx5NZ",
+      "type": "custom",
+      "position": {
+        "x": 2115.5,
+        "y": 523
+      },
+      "data": {
+        "label": "连续--×-->可导--×-->解析",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 194,
+        "height": 40
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "cdBqcjIGgzv3BGmFQS7ao",
+      "type": "custom",
+      "position": {
+        "x": 2332.5,
+        "y": 523
+      },
+      "data": {
+        "label": "连续的函数有可能是锯齿状，不可导。可导的函数可能不能形成区域，不解析",
+        "level": 5
+      },
+      "selected": false,
+      "measured": {
+        "width": 504,
+        "height": 40
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "LujyJKvdLoZdQ8I2YfuMd",
+      "type": "custom",
+      "position": {
+        "x": 2112.5,
+        "y": 588
+      },
+      "data": {
+        "label": "连续<----可导<----解析",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 200,
+        "height": 40
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "hcqiw2LSKRLyE3CZM-wO7",
+      "type": "custom",
+      "position": {
+        "x": 2094.5,
+        "y": 653
+      },
+      "data": {
+        "label": "不连续---->不可导---->不解析",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 242,
+        "height": 40
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "TKvYiU9sdNMKInYJjc9Wy",
+      "type": "custom",
+      "position": {
+        "x": 2097.5,
+        "y": 718
+      },
+      "data": {
+        "label": "不连续<--×--不可导<--×--不解析",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 236,
+        "height": 40
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "EudVbw6BL4Tq5VCA-EY6s",
+      "type": "custom",
+      "position": {
+        "x": 1060,
+        "y": 1111.5
+      },
+      "data": {
+        "label": "复变函数的积分😂",
+        "level": 1
+      },
+      "selected": false,
+      "measured": {
+        "width": 213,
+        "height": 66
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "8p5ORiQLGjAdQnmBJDVAK",
+      "type": "custom",
+      "position": {
+        "x": 1425,
+        "y": 783
+      },
+      "data": {
+        "label": "柯西积分定理",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "dOFpdHdymdNnyRMoWAFme",
+      "type": "custom",
+      "position": {
+        "x": 1635.5,
+        "y": 789
+      },
+      "data": {
+        "label": "设函数f(z)在单连通区域D内解析，C为D内任意一条简单闭曲线，则积分为0",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 496,
+        "height": 40
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "a8wr3WfRMlIrwcGstIrrn",
+      "type": "custom",
+      "position": {
+        "x": 1425,
+        "y": 1042
+      },
+      "data": {
+        "label": "柯西积分公式",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "LTzU3enqD__HCFtr8j8zn",
+      "type": "custom",
+      "position": {
+        "x": 1773,
+        "y": 1045
+      },
+      "data": {
+        "label": "$ f(z) = \\frac{1}{2\\pi i} \\oint_\\gamma \\frac{f(\\zeta)}{\\zeta - z} \\, d\\zeta. $",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 176,
+        "height": 45
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "VkwRrXDygK5UvZxaJKO3d",
+      "type": "custom",
+      "position": {
+        "x": 2009.5,
+        "y": 860
+      },
+      "data": {
+        "label": "eg1:\n\n$ \\oint_{|z|=2} \\frac{z}{(9-z^2)(z+i)} \\, dz = \\oint_{|z|=2} \\frac{z/(9-z^2)}{z-(-i)} \\, dz = 2\\pi i \\left. \\frac{z}{9-z^2} \\right|_{z=-i} = \\frac{\\pi}{5} $",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 441,
+        "height": 74
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "wgrOKbbGx_y-wRt_oXTMZ",
+      "type": "custom",
+      "position": {
+        "x": 1991.5,
+        "y": 955
+      },
+      "data": {
+        "label": "eg2:\n\n计算积分\n\n$$\n\\oint_{|z|=2} \\frac{\\sin z}{z^2 - 1} \\, dz\n$$\n\n解　因 \n\n$$\n\\frac{1}{z^2 - 1} = \\frac{1}{2} \\left( \\frac{1}{z-1} - \\frac{1}{z+1} \\right),\n$$\n\n$$\n\\oint_{|z|=2} \\frac{\\sin z}{z^2 - 1} \\, dz = \\frac{1}{2} \\oint_{|z|=2} \\frac{\\sin z}{z-1} \\, dz - \\frac{1}{2} \\oint_{|z|=2} \\frac{\\sin z}{z+1} \\, dz\n$$\n\n$$\n= \\frac{1}{2} \\cdot 2\\pi i \\cdot \\sin z \\Big|_{z=1} - \\frac{1}{2} \\cdot 2\\pi i \\cdot \\sin z \\Big|_{z=-1} = 2\\pi i \\sin 1\n$$\n\n",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 418,
+        "height": 329
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "36PhQXJotkHRyzPbdKLFq",
+      "type": "custom",
+      "position": {
+        "x": 1419.5,
+        "y": 1309
+      },
+      "data": {
+        "label": "解析函数的高阶导数",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 180,
+        "height": 52
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "8iT8-OXwcdLOAGgsnZBZu",
+      "type": "custom",
+      "position": {
+        "x": 1683.5,
+        "y": 1301
+      },
+      "data": {
+        "label": "柯西高阶导数公式:\n\n$ f^{(n)}(z) = \\frac{n!}{2\\pi i} \\oint_C \\frac{f(\\zeta)}{(\\zeta - z)^{n+1}} \\, d\\zeta \\quad (z \\in D, n = 1, 2, \\cdots) $",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 385,
+        "height": 72
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "wSXvH8omdk-hA-mO0X_vg",
+      "type": "custom",
+      "position": {
+        "x": 2012.5,
+        "y": 1315
+      },
+      "data": {
+        "label": "可以把这个公式看作：符合这个积分格式的式子，可以转换为求导",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 434,
+        "height": 40
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "PKyglKLIggcB9x5ZiR84r",
+      "type": "custom",
+      "position": {
+        "x": 1425,
+        "y": 1424
+      },
+      "data": {
+        "label": "调和函数",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "rXyUf53-Smvg8vmae4xmi",
+      "type": "custom",
+      "position": {
+        "x": 1695,
+        "y": 1394
+      },
+      "data": {
+        "label": "f(z)在区域D内解析的充要条件是v为u的共轭调和函数",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 357,
+        "height": 40
+      },
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "uTxlEOdnE1qd4wa_5qhlS",
+      "type": "custom",
+      "position": {
+        "x": 2071.5,
+        "y": 1394
+      },
+      "data": {
+        "label": "即：解析函数的虚部v称为实部u的共轭函数",
+        "level": 4
+      },
+      "selected": false,
+      "measured": {
+        "width": 296,
+        "height": 40
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "G5hHZztCubv9X2YduYazx",
+      "type": "custom",
+      "position": {
+        "x": 1790,
+        "y": 1459
+      },
+      "data": {
+        "label": "$ \\frac{\\partial^2 g}{\\partial x^2} + \\frac{\\partial^2 g}{\\partial y^2} = 0 $",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 46
+      },
+      "dragging": false,
+      "targetPosition": "left",
+      "sourcePosition": "right"
+    },
+    {
+      "id": "7w8PanCPD-viQX3ND0Qqj",
+      "type": "custom",
+      "position": {
+        "x": 360,
+        "y": 331.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "级数",
+        "level": 1,
+        "fontSize": "large",
+        "nodeSize": "large"
+      },
+      "selected": false,
+      "measured": {
+        "width": 180,
+        "height": 66
+      },
+      "dragging": false
+    },
+    {
+      "id": "bhmb0Bi6vBQGxqY4UYQqA",
+      "type": "custom",
+      "position": {
+        "x": 25,
+        "y": 168
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "泰勒级数\n",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      },
+      "dragging": false
+    },
+    {
+      "id": "mxVUnKbUYMY7AqsibOjWy",
+      "type": "custom",
+      "position": {
+        "x": -491.5,
+        "y": -152.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "运算时注意使用列项，求导，积分等常用技巧，将题目中要求的积分转化为会求的积分",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 560,
+        "height": 40
+      },
+      "dragging": false
+    },
+    {
+      "id": "hHI5Oz2RW6DGptF_EDQia",
+      "type": "custom",
+      "position": {
+        "x": -496,
+        "y": -87.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "指数函数\n\n$$\ne^z = \\sum_{n=0}^{\\infty} \\frac{z^n}{n!} = 1 + z + \\frac{z^2}{2!} + \\frac{z^3}{3!} + \\cdots\n$$\n\n正弦函数\n\n$$\n\\sin z = \\sum_{n=0}^{\\infty} (-1)^n \\frac{z^{2n+1}}{(2n+1)!} = z - \\frac{z^3}{3!} + \\frac{z^5}{5!} - \\frac{z^7}{7!} + \\cdots\n$$\n\n余弦函数\n\n$$\n\\cos z = \\sum_{n=0}^{\\infty} (-1)^n \\frac{z^{2n}}{(2n)!} = 1 - \\frac{z^2}{2!} + \\frac{z^4}{4!} - \\frac{z^6}{6!} + \\cdots\n$$\n\n对数函数\n\n$$\n\\ln(1+z) = \\sum_{n=1}^{\\infty} (-1)^{n+1} \\frac{z^n}{n} = z - \\frac{z^2}{2} + \\frac{z^3}{3} - \\frac{z^4}{4} + \\cdots \\quad (|z|<1)\n$$\n$\\frac{1}{1+z}$\n$$\n\\frac{1}{1+z} = \\sum_{n=0}^{\\infty} (-1)^n z^n = 1 - z + z^2 - z^3 + z^4 - \\cdots\n$$\n\n收敛域：\\( |z| < 1 \\).\n\n\n\n$\\frac{1}{1-z}$\n$$\n\\frac{1}{1-z} = \\sum_{n=1}^{\\infty} z^n = z + z^2 + z^3 + z^4 + \\cdots\n$$\n\n收敛域：\\( |z| < 1 \\).\n\n",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 493,
+        "height": 654
+      },
+      "dragging": false
+    },
+    {
+      "id": "sMDCoJXdLM09UJ2Hk02gn",
+      "type": "custom",
+      "position": {
+        "x": 355.5,
+        "y": 999
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "解析函数的孤立奇点",
+        "level": 1
+      },
+      "selected": false,
+      "measured": {
+        "width": 226,
+        "height": 66
+      },
+      "dragging": false
+    },
+    {
+      "id": "y1_IJFlo3D_VkJzsdaZme",
+      "type": "custom",
+      "position": {
+        "x": -58,
+        "y": 906.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "$z_0$是$f(z)$的m级零点，则$z_0$是$\\frac{1}{f(z)}$的m级极点",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 357,
+        "height": 56
+      },
+      "dragging": false
+    },
+    {
+      "id": "xwlElwyRNKzEHw1glumKb",
+      "type": "custom",
+      "position": {
+        "x": -146,
+        "y": 1045.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "如果$z_0$是$f(z)$的孤立奇点，则在某个去心邻域内，$f(z)$可展成洛朗级数：\n",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 558,
+        "height": 53
+      },
+      "dragging": false
+    },
+    {
+      "id": "64g9x_MUP7qGCWjiaiOZe",
+      "type": "custom",
+      "position": {
+        "x": -343.5,
+        "y": 987.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "有无穷个负幂次项-->本性奇点",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 215,
+        "height": 40
+      },
+      "dragging": false
+    },
+    {
+      "id": "DwliuAmSjBwINt9uXbY18",
+      "type": "custom",
+      "position": {
+        "x": -331.5,
+        "y": 1052.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "没有负幂次项-->可去奇点",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 187,
+        "height": 40
+      }
+    },
+    {
+      "id": "CVvH645hTEdzvrHBj3myA",
+      "type": "custom",
+      "position": {
+        "x": -336,
+        "y": 1117.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "有m个负幂次项-->m级极点",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 197,
+        "height": 40
+      }
+    },
+    {
+      "id": "DQxZF4V9xlabe61vLd6xp",
+      "type": "custom",
+      "position": {
+        "x": 25,
+        "y": 594
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "零点及零点的级",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      },
+      "dragging": false
+    },
+    {
+      "id": "hcsOGgMvvq0xdGeeJ0Akh",
+      "type": "custom",
+      "position": {
+        "x": -330.5,
+        "y": 565.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "$f(z) = (z - z_0)^m \\varphi(z)$",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 184,
+        "height": 41
+      },
+      "dragging": false
+    },
+    {
+      "id": "ojToV6wPiwWXoIfB-qUIO",
+      "type": "custom",
+      "position": {
+        "x": -416.5,
+        "y": 632.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "$\\phi(z)$解析且不等于0，则$z_0$为f(z)的m级零点，级就是幂次",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 385,
+        "height": 41
+      },
+      "dragging": false
+    },
+    {
+      "id": "NW_VHfjevDbvGFDp4tI1t",
+      "type": "custom",
+      "position": {
+        "x": 25,
+        "y": 726
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "收敛与收敛半径",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      },
+      "dragging": false
+    },
+    {
+      "id": "L1cVehLO7gAx6SkU063N4",
+      "type": "custom",
+      "position": {
+        "x": -310,
+        "y": 699.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "比值法",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 40
+      }
+    },
+    {
+      "id": "oGza6c0BirvT_HmU5KfuO",
+      "type": "custom",
+      "position": {
+        "x": -310,
+        "y": 764.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "根值法",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 40
+      }
+    },
+    {
+      "id": "aZVwpgJF3OrkBrlTi1NVu",
+      "type": "custom",
+      "position": {
+        "x": 25,
+        "y": 829.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "洛朗级数\n",
+        "level": 2
+      },
+      "selected": false,
+      "measured": {
+        "width": 160,
+        "height": 52
+      },
+      "dragging": false
+    },
+    {
+      "id": "4qNWAFWbbNaMm8MBF_NCi",
+      "type": "custom",
+      "position": {
+        "x": -310,
+        "y": 835.5
+      },
+      "targetPosition": "right",
+      "sourcePosition": "left",
+      "data": {
+        "label": "圆环域上展开",
+        "level": 3
+      },
+      "selected": false,
+      "measured": {
+        "width": 130,
+        "height": 40
+      },
+      "dragging": false
+    }
+  ],
+  "edges": [
+    {
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "source": "wa-nkn-5hs48gSgU1BJoV",
+      "target": "yEzO9xuPSwSNjShSTzNC9",
+      "id": "xy-edge__wa-nkn-5hs48gSgU1BJoV-yEzO9xuPSwSNjShSTzNC9",
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eyEzO9xuPSwSNjShSTzNC9-L5JyExa0uIPKbjw8fFXEw",
+      "source": "yEzO9xuPSwSNjShSTzNC9",
+      "target": "L5JyExa0uIPKbjw8fFXEw",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eL5JyExa0uIPKbjw8fFXEw-pnkm675uq-Kp4yd5R-Wpk",
+      "source": "L5JyExa0uIPKbjw8fFXEw",
+      "target": "pnkm675uq-Kp4yd5R-Wpk",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eyEzO9xuPSwSNjShSTzNC9-LcvevZ_S4j9iT2pRjAXFz",
+      "source": "yEzO9xuPSwSNjShSTzNC9",
+      "target": "LcvevZ_S4j9iT2pRjAXFz",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eLcvevZ_S4j9iT2pRjAXFz-m9FgtEPkzxwHZNvN0iYtR",
+      "source": "LcvevZ_S4j9iT2pRjAXFz",
+      "target": "m9FgtEPkzxwHZNvN0iYtR",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eyEzO9xuPSwSNjShSTzNC9-Ssa8Ke5Obp47Day_rhtny",
+      "source": "yEzO9xuPSwSNjShSTzNC9",
+      "target": "Ssa8Ke5Obp47Day_rhtny",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eSsa8Ke5Obp47Day_rhtny-WEsJrqgCJbQUmWtbxNywJ",
+      "source": "Ssa8Ke5Obp47Day_rhtny",
+      "target": "WEsJrqgCJbQUmWtbxNywJ",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eSsa8Ke5Obp47Day_rhtny-DLGjH9UPG7fZS-MlXDtpA",
+      "source": "Ssa8Ke5Obp47Day_rhtny",
+      "target": "DLGjH9UPG7fZS-MlXDtpA",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eyEzO9xuPSwSNjShSTzNC9-m5uZJfPGcXTczArZcnupZ",
+      "source": "yEzO9xuPSwSNjShSTzNC9",
+      "target": "m5uZJfPGcXTczArZcnupZ",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "em5uZJfPGcXTczArZcnupZ-jYspvnl_HxYU3VeG24z-g",
+      "source": "m5uZJfPGcXTczArZcnupZ",
+      "target": "jYspvnl_HxYU3VeG24z-g",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "ejYspvnl_HxYU3VeG24z-g-FF1mmFSMcRiFWeTXbNOih",
+      "source": "jYspvnl_HxYU3VeG24z-g",
+      "target": "FF1mmFSMcRiFWeTXbNOih",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "em5uZJfPGcXTczArZcnupZ-wMhQ0b_jyTDx7cpGkiTHD",
+      "source": "m5uZJfPGcXTczArZcnupZ",
+      "target": "wMhQ0b_jyTDx7cpGkiTHD",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "ewMhQ0b_jyTDx7cpGkiTHD-t9Z0-MeNFc9V71rostP24",
+      "source": "wMhQ0b_jyTDx7cpGkiTHD",
+      "target": "t9Z0-MeNFc9V71rostP24",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "em5uZJfPGcXTczArZcnupZ-zUdWsQfFERy9Kwe1IjXUa",
+      "source": "m5uZJfPGcXTczArZcnupZ",
+      "target": "zUdWsQfFERy9Kwe1IjXUa",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "ewMhQ0b_jyTDx7cpGkiTHD-ixDrFbVdxFNqEFbSiAw2Q",
+      "source": "wMhQ0b_jyTDx7cpGkiTHD",
+      "target": "ixDrFbVdxFNqEFbSiAw2Q",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eixDrFbVdxFNqEFbSiAw2Q-HWxBJORX4nEJn_1kl3bmV",
+      "source": "ixDrFbVdxFNqEFbSiAw2Q",
+      "target": "HWxBJORX4nEJn_1kl3bmV",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eixDrFbVdxFNqEFbSiAw2Q-ZTeCsOTVIuqLMslkPxdOZ",
+      "source": "ixDrFbVdxFNqEFbSiAw2Q",
+      "target": "ZTeCsOTVIuqLMslkPxdOZ",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "em5uZJfPGcXTczArZcnupZ-iieBvBFleA2z5Ax0yldyc",
+      "source": "m5uZJfPGcXTczArZcnupZ",
+      "target": "iieBvBFleA2z5Ax0yldyc",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eiieBvBFleA2z5Ax0yldyc-ihDAQT6SnbPf2Awh8SVqX",
+      "source": "iieBvBFleA2z5Ax0yldyc",
+      "target": "ihDAQT6SnbPf2Awh8SVqX",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eiieBvBFleA2z5Ax0yldyc-S00m3XYxh-ym1EAv_wqTR",
+      "source": "iieBvBFleA2z5Ax0yldyc",
+      "target": "S00m3XYxh-ym1EAv_wqTR",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "em5uZJfPGcXTczArZcnupZ-mNq8SY8rk0q6mTUXirKf5",
+      "source": "m5uZJfPGcXTczArZcnupZ",
+      "target": "mNq8SY8rk0q6mTUXirKf5",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "emNq8SY8rk0q6mTUXirKf5-kjn125T-w1_OmSn5c0hTm",
+      "source": "mNq8SY8rk0q6mTUXirKf5",
+      "target": "kjn125T-w1_OmSn5c0hTm",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "em5uZJfPGcXTczArZcnupZ-S4kPRI08D2dHzUDaF6hvK",
+      "source": "m5uZJfPGcXTczArZcnupZ",
+      "target": "S4kPRI08D2dHzUDaF6hvK",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eS4kPRI08D2dHzUDaF6hvK-lO5_wpfXxosAzfbsvx5NZ",
+      "source": "S4kPRI08D2dHzUDaF6hvK",
+      "target": "lO5_wpfXxosAzfbsvx5NZ",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "elO5_wpfXxosAzfbsvx5NZ-cdBqcjIGgzv3BGmFQS7ao",
+      "source": "lO5_wpfXxosAzfbsvx5NZ",
+      "target": "cdBqcjIGgzv3BGmFQS7ao",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eS4kPRI08D2dHzUDaF6hvK-LujyJKvdLoZdQ8I2YfuMd",
+      "source": "S4kPRI08D2dHzUDaF6hvK",
+      "target": "LujyJKvdLoZdQ8I2YfuMd",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eS4kPRI08D2dHzUDaF6hvK-hcqiw2LSKRLyE3CZM-wO7",
+      "source": "S4kPRI08D2dHzUDaF6hvK",
+      "target": "hcqiw2LSKRLyE3CZM-wO7",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eS4kPRI08D2dHzUDaF6hvK-TKvYiU9sdNMKInYJjc9Wy",
+      "source": "S4kPRI08D2dHzUDaF6hvK",
+      "target": "TKvYiU9sdNMKInYJjc9Wy",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "ewa-nkn-5hs48gSgU1BJoV-EudVbw6BL4Tq5VCA-EY6s",
+      "source": "wa-nkn-5hs48gSgU1BJoV",
+      "target": "EudVbw6BL4Tq5VCA-EY6s",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eEudVbw6BL4Tq5VCA-EY6s-8p5ORiQLGjAdQnmBJDVAK",
+      "source": "EudVbw6BL4Tq5VCA-EY6s",
+      "target": "8p5ORiQLGjAdQnmBJDVAK",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e8p5ORiQLGjAdQnmBJDVAK-dOFpdHdymdNnyRMoWAFme",
+      "source": "8p5ORiQLGjAdQnmBJDVAK",
+      "target": "dOFpdHdymdNnyRMoWAFme",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eEudVbw6BL4Tq5VCA-EY6s-a8wr3WfRMlIrwcGstIrrn",
+      "source": "EudVbw6BL4Tq5VCA-EY6s",
+      "target": "a8wr3WfRMlIrwcGstIrrn",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "ea8wr3WfRMlIrwcGstIrrn-LTzU3enqD__HCFtr8j8zn",
+      "source": "a8wr3WfRMlIrwcGstIrrn",
+      "target": "LTzU3enqD__HCFtr8j8zn",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eLTzU3enqD__HCFtr8j8zn-VkwRrXDygK5UvZxaJKO3d",
+      "source": "LTzU3enqD__HCFtr8j8zn",
+      "target": "VkwRrXDygK5UvZxaJKO3d",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eLTzU3enqD__HCFtr8j8zn-wgrOKbbGx_y-wRt_oXTMZ",
+      "source": "LTzU3enqD__HCFtr8j8zn",
+      "target": "wgrOKbbGx_y-wRt_oXTMZ",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eEudVbw6BL4Tq5VCA-EY6s-36PhQXJotkHRyzPbdKLFq",
+      "source": "EudVbw6BL4Tq5VCA-EY6s",
+      "target": "36PhQXJotkHRyzPbdKLFq",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e36PhQXJotkHRyzPbdKLFq-8iT8-OXwcdLOAGgsnZBZu",
+      "source": "36PhQXJotkHRyzPbdKLFq",
+      "target": "8iT8-OXwcdLOAGgsnZBZu",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "e8iT8-OXwcdLOAGgsnZBZu-wSXvH8omdk-hA-mO0X_vg",
+      "source": "8iT8-OXwcdLOAGgsnZBZu",
+      "target": "wSXvH8omdk-hA-mO0X_vg",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "eEudVbw6BL4Tq5VCA-EY6s-PKyglKLIggcB9x5ZiR84r",
+      "source": "EudVbw6BL4Tq5VCA-EY6s",
+      "target": "PKyglKLIggcB9x5ZiR84r",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "ePKyglKLIggcB9x5ZiR84r-rXyUf53-Smvg8vmae4xmi",
+      "source": "PKyglKLIggcB9x5ZiR84r",
+      "target": "rXyUf53-Smvg8vmae4xmi",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "erXyUf53-Smvg8vmae4xmi-uTxlEOdnE1qd4wa_5qhlS",
+      "source": "rXyUf53-Smvg8vmae4xmi",
+      "target": "uTxlEOdnE1qd4wa_5qhlS",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "ePKyglKLIggcB9x5ZiR84r-G5hHZztCubv9X2YduYazx",
+      "source": "PKyglKLIggcB9x5ZiR84r",
+      "target": "G5hHZztCubv9X2YduYazx",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "sourceHandle": "right",
+      "targetHandle": "left"
+    },
+    {
+      "id": "ewa-nkn-5hs48gSgU1BJoV-7w8PanCPD-viQX3ND0Qqj",
+      "source": "wa-nkn-5hs48gSgU1BJoV",
+      "target": "7w8PanCPD-viQX3ND0Qqj",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "e7w8PanCPD-viQX3ND0Qqj-bhmb0Bi6vBQGxqY4UYQqA",
+      "source": "7w8PanCPD-viQX3ND0Qqj",
+      "target": "bhmb0Bi6vBQGxqY4UYQqA",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "ebhmb0Bi6vBQGxqY4UYQqA-mxVUnKbUYMY7AqsibOjWy",
+      "source": "bhmb0Bi6vBQGxqY4UYQqA",
+      "target": "mxVUnKbUYMY7AqsibOjWy",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "ebhmb0Bi6vBQGxqY4UYQqA-hHI5Oz2RW6DGptF_EDQia",
+      "source": "bhmb0Bi6vBQGxqY4UYQqA",
+      "target": "hHI5Oz2RW6DGptF_EDQia",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "ewa-nkn-5hs48gSgU1BJoV-sMDCoJXdLM09UJ2Hk02gn",
+      "source": "wa-nkn-5hs48gSgU1BJoV",
+      "target": "sMDCoJXdLM09UJ2Hk02gn",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "esMDCoJXdLM09UJ2Hk02gn-y1_IJFlo3D_VkJzsdaZme",
+      "source": "sMDCoJXdLM09UJ2Hk02gn",
+      "target": "y1_IJFlo3D_VkJzsdaZme",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "esMDCoJXdLM09UJ2Hk02gn-xwlElwyRNKzEHw1glumKb",
+      "source": "sMDCoJXdLM09UJ2Hk02gn",
+      "target": "xwlElwyRNKzEHw1glumKb",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "exwlElwyRNKzEHw1glumKb-64g9x_MUP7qGCWjiaiOZe",
+      "source": "xwlElwyRNKzEHw1glumKb",
+      "target": "64g9x_MUP7qGCWjiaiOZe",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "exwlElwyRNKzEHw1glumKb-DwliuAmSjBwINt9uXbY18",
+      "source": "xwlElwyRNKzEHw1glumKb",
+      "target": "DwliuAmSjBwINt9uXbY18",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "exwlElwyRNKzEHw1glumKb-CVvH645hTEdzvrHBj3myA",
+      "source": "xwlElwyRNKzEHw1glumKb",
+      "target": "CVvH645hTEdzvrHBj3myA",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "e7w8PanCPD-viQX3ND0Qqj-DQxZF4V9xlabe61vLd6xp",
+      "source": "7w8PanCPD-viQX3ND0Qqj",
+      "target": "DQxZF4V9xlabe61vLd6xp",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "eDQxZF4V9xlabe61vLd6xp-hcsOGgMvvq0xdGeeJ0Akh",
+      "source": "DQxZF4V9xlabe61vLd6xp",
+      "target": "hcsOGgMvvq0xdGeeJ0Akh",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "eDQxZF4V9xlabe61vLd6xp-ojToV6wPiwWXoIfB-qUIO",
+      "source": "DQxZF4V9xlabe61vLd6xp",
+      "target": "ojToV6wPiwWXoIfB-qUIO",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      },
+      "selected": false
+    },
+    {
+      "id": "e7w8PanCPD-viQX3ND0Qqj-NW_VHfjevDbvGFDp4tI1t",
+      "source": "7w8PanCPD-viQX3ND0Qqj",
+      "target": "NW_VHfjevDbvGFDp4tI1t",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "eNW_VHfjevDbvGFDp4tI1t-L1cVehLO7gAx6SkU063N4",
+      "source": "NW_VHfjevDbvGFDp4tI1t",
+      "target": "L1cVehLO7gAx6SkU063N4",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "eNW_VHfjevDbvGFDp4tI1t-oGza6c0BirvT_HmU5KfuO",
+      "source": "NW_VHfjevDbvGFDp4tI1t",
+      "target": "oGza6c0BirvT_HmU5KfuO",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "e7w8PanCPD-viQX3ND0Qqj-aZVwpgJF3OrkBrlTi1NVu",
+      "source": "7w8PanCPD-viQX3ND0Qqj",
+      "target": "aZVwpgJF3OrkBrlTi1NVu",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    },
+    {
+      "id": "eaZVwpgJF3OrkBrlTi1NVu-4qNWAFWbbNaMm8MBF_NCi",
+      "source": "aZVwpgJF3OrkBrlTi1NVu",
+      "target": "4qNWAFWbbNaMm8MBF_NCi",
+      "sourceHandle": "left",
+      "targetHandle": "right",
+      "type": "default",
+      "animated": false,
+      "style": {
+        "strokeWidth": 2,
+        "stroke": "#888888"
+      }
+    }
+  ]
+}

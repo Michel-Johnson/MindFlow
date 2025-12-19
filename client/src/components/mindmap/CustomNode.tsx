@@ -64,45 +64,45 @@ export const CustomNode = memo(({ data, selected, id, targetPosition, sourcePosi
     switch (level) {
       case 0: // 主节点
         baseStyles = {
-          fontSize: 'text-2xl',
+          fontSize: 'text-4xl',
           fontWeight: 'font-bold',
           borderWidth: 'border-4',
           borderColor: 'border-primary',
           padding: 'px-6 py-5',
-          minWidth: 'min-w-[200px]',
+          minWidth: 'min-w-[220px]',
           shadow: 'shadow-xl',
           borderRadius: 'rounded-2xl'
         };
         break;
       case 1: // 次级节点
         baseStyles = {
-          fontSize: 'text-base',
+          fontSize: 'text-xl',
           fontWeight: 'font-semibold',
           borderWidth: 'border-[3px]',
           padding: 'px-5 py-4',
-          minWidth: 'min-w-[180px]',
+          minWidth: 'min-w-[190px]',
           shadow: 'shadow-lg',
           borderRadius: 'rounded-xl'
         };
         break;
       case 2: // 第三级节点
         baseStyles = {
-          fontSize: 'text-sm',
+          fontSize: 'text-base',
           fontWeight: 'font-medium',
           borderWidth: 'border-2',
           padding: 'px-4 py-3',
-          minWidth: 'min-w-[150px]',
+          minWidth: 'min-w-[160px]',
           shadow: 'shadow-md',
           borderRadius: 'rounded-lg'
         };
         break;
       default: // 第四级及以下
         baseStyles = {
-          fontSize: 'text-xs',
+          fontSize: 'text-sm',
           fontWeight: 'font-normal',
           borderWidth: 'border-2',
           padding: 'px-3 py-2',
-          minWidth: 'min-w-[120px]',
+          minWidth: 'min-w-[130px]',
           shadow: 'shadow-sm',
           borderRadius: 'rounded-lg'
         };
@@ -111,10 +111,10 @@ export const CustomNode = memo(({ data, selected, id, targetPosition, sourcePosi
     // Override with custom fontSize
     if (customFontSize) {
       const fontSizeMap = {
-        small: 'text-xs',
-        medium: 'text-sm',
-        large: 'text-base',
-        xlarge: 'text-lg'
+        small: 'text-sm',
+        medium: 'text-base',
+        large: 'text-xl',
+        xlarge: 'text-3xl'
       };
       baseStyles.fontSize = fontSizeMap[customFontSize];
     }
@@ -365,15 +365,15 @@ export const CustomNode = memo(({ data, selected, id, targetPosition, sourcePosi
                     components={{
                       p: ({children}) => <p className={cn("m-0 leading-relaxed", levelStyles.fontSize, levelStyles.fontWeight)}>{children}</p>,
                       h1: ({children}) => {
-                        const h1Size = level === 0 ? 'text-2xl' : level === 1 ? 'text-xl' : level === 2 ? 'text-lg' : 'text-base';
+                        const h1Size = level === 0 ? 'text-4xl' : level === 1 ? 'text-3xl' : level === 2 ? 'text-2xl' : 'text-xl';
                         return <h1 className={cn("font-bold border-b border-border/50 pb-2 mb-2 text-primary", h1Size)}>{children}</h1>;
                       },
                       h2: ({children}) => {
-                        const h2Size = level === 0 ? 'text-xl' : level === 1 ? 'text-lg' : level === 2 ? 'text-base' : 'text-sm';
+                        const h2Size = level === 0 ? 'text-3xl' : level === 1 ? 'text-2xl' : level === 2 ? 'text-xl' : 'text-lg';
                         return <h2 className={cn("font-bold mb-1 text-foreground/90", h2Size)}>{children}</h2>;
                       },
                       h3: ({children}) => {
-                        const h3Size = level === 0 ? 'text-lg' : level === 1 ? 'text-base' : level === 2 ? 'text-sm' : 'text-xs';
+                        const h3Size = level === 0 ? 'text-2xl' : level === 1 ? 'text-xl' : level === 2 ? 'text-lg' : 'text-base';
                         return <h3 className={cn("font-bold mb-1 text-foreground/80", h3Size)}>{children}</h3>;
                       },
                       code: ({children}) => {
@@ -422,15 +422,15 @@ export const CustomNode = memo(({ data, selected, id, targetPosition, sourcePosi
                   components={{
                     p: ({children}) => <p className={cn("m-0 leading-relaxed", levelStyles.fontSize, levelStyles.fontWeight)}>{children}</p>,
                     h1: ({children}) => {
-                      const h1Size = level === 0 ? 'text-2xl' : level === 1 ? 'text-xl' : level === 2 ? 'text-lg' : 'text-base';
+                      const h1Size = level === 0 ? 'text-4xl' : level === 1 ? 'text-3xl' : level === 2 ? 'text-2xl' : 'text-xl';
                       return <h1 className={cn("font-bold border-b border-border/50 pb-2 mb-2 text-primary", h1Size)}>{children}</h1>;
                     },
                     h2: ({children}) => {
-                      const h2Size = level === 0 ? 'text-xl' : level === 1 ? 'text-lg' : level === 2 ? 'text-base' : 'text-sm';
+                      const h2Size = level === 0 ? 'text-3xl' : level === 1 ? 'text-2xl' : level === 2 ? 'text-xl' : 'text-lg';
                       return <h2 className={cn("font-bold mb-1 text-foreground/90", h2Size)}>{children}</h2>;
                     },
                     h3: ({children}) => {
-                      const h3Size = level === 0 ? 'text-lg' : level === 1 ? 'text-base' : level === 2 ? 'text-sm' : 'text-xs';
+                      const h3Size = level === 0 ? 'text-2xl' : level === 1 ? 'text-xl' : level === 2 ? 'text-lg' : 'text-base';
                       return <h3 className={cn("font-bold mb-1 text-foreground/80", h3Size)}>{children}</h3>;
                     },
                     code: ({children}) => {
@@ -454,15 +454,15 @@ export const CustomNode = memo(({ data, selected, id, targetPosition, sourcePosi
                 components={{
                   p: ({children}) => <p className={cn("m-0 leading-relaxed", levelStyles.fontSize, levelStyles.fontWeight)}>{children}</p>,
                   h1: ({children}) => {
-                    const h1Size = level === 0 ? 'text-2xl' : level === 1 ? 'text-xl' : level === 2 ? 'text-lg' : 'text-base';
+                    const h1Size = level === 0 ? 'text-4xl' : level === 1 ? 'text-3xl' : level === 2 ? 'text-2xl' : 'text-xl';
                     return <h1 className={cn("font-bold border-b border-border/50 pb-2 mb-2 text-primary", h1Size)}>{children}</h1>;
                   },
                   h2: ({children}) => {
-                    const h2Size = level === 0 ? 'text-xl' : level === 1 ? 'text-lg' : level === 2 ? 'text-base' : 'text-sm';
+                    const h2Size = level === 0 ? 'text-3xl' : level === 1 ? 'text-2xl' : level === 2 ? 'text-xl' : 'text-lg';
                     return <h2 className={cn("font-bold mb-1 text-foreground/90", h2Size)}>{children}</h2>;
                   },
                   h3: ({children}) => {
-                    const h3Size = level === 0 ? 'text-lg' : level === 1 ? 'text-base' : level === 2 ? 'text-sm' : 'text-xs';
+                    const h3Size = level === 0 ? 'text-2xl' : level === 1 ? 'text-xl' : level === 2 ? 'text-lg' : 'text-base';
                     return <h3 className={cn("font-bold mb-1 text-foreground/80", h3Size)}>{children}</h3>;
                   },
                   code: ({children}) => {

@@ -135,6 +135,8 @@ function MindMapContent() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [currentTheme, setCurrentTheme] = useState<ThemeId>('light');
+  // 当前打开的项目文件名（如果是从 JSON 加载的）
+  const [currentProjectName, setCurrentProjectName] = useState<string | null>(null);
   const [editingNodeId, setEditingNodeId] = useState<string | null>(null);
   const { fitView, getNodes, getEdges, setViewport, getViewport } = useReactFlow();
   const { toast } = useToast();
@@ -346,6 +348,8 @@ function MindMapContent() {
         
         setNodes(nodesWithCallbacks);
         setEdges(data.edges);
+        // 记录当前项目的文件名，后续保存时用于默认文件名
+        setCurrentProjectName(file.name || 'mindmap.json');
         
         if (data.viewport) {
             setViewport(data.viewport);
@@ -787,7 +791,8 @@ function MindMapContent() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'mindmap.json';
+      // 如果是从文件加载的项目，则默认使用原文件名，否则使用 mindmap.json
+      a.download = currentProjectName || 'mindmap.json';
       a.click();
       URL.revokeObjectURL(url);
       return;
