@@ -1,0 +1,2 @@
+如果你使用Windows系统，请直接下载MindMap_For_Windows这个文件夹，以管理员身份运行exe文件即可。
+详细使用教程待更新
