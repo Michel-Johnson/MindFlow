@@ -17,12 +17,23 @@ import {
   Network,
   GitGraph,
   Share2,
-  Workflow
+  Workflow,
+  Settings,
+  Trash2
 } from "lucide-react";
 import { HelpDialog } from "./HelpDialog";
-import { useRef, type ChangeEvent } from "react";
+import { useRef, useState, type ChangeEvent } from "react";
 import { cn } from "@/lib/utils";
 import { LayoutDirection } from "@/lib/layout";
+import type { CustomThemeSettings } from "@/lib/customTheme";
+import { Slider } from "@/components/ui/slider";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 interface SidebarProps {
   onExport: (type: 'png' | 'svg' | 'pdf' | 'json') => void;
@@ -31,10 +42,34 @@ interface SidebarProps {
   currentTheme: ThemeId;
   onThemeChange: (themeId: ThemeId) => void;
   onAddChild: () => void;
+  customThemeSettings: CustomThemeSettings;
+  customBackgroundUrl: string | null;
+  onCustomBackgroundChange: (file: File) => void;
+  onCustomBackgroundClear: () => void;
+  onCustomThemeSettingsChange: (patch: Partial<CustomThemeSettings>) => void;
+  onCustomThemeReset: () => void;
 }
 
-export function Sidebar({ onExport, onLayout, onLoad, currentTheme, onThemeChange, onAddChild }: SidebarProps) {
+export function Sidebar({
+  onExport,
+  onLayout,
+  onLoad,
+  currentTheme,
+  onThemeChange,
+  onAddChild,
+  customThemeSettings,
+  customBackgroundUrl,
+  onCustomBackgroundChange,
+  onCustomBackgroundClear,
+  onCustomThemeSettingsChange,
+  onCustomThemeReset,
+}: SidebarProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const isForest = currentTheme === "forest";
+  const isCustom = currentTheme === "custom";
+  const isPhotoSidebar = isForest || isCustom;
+  const [customDialogOpen, setCustomDialogOpen] = useState(false);
+  const customBgInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -46,11 +81,54 @@ export function Sidebar({ onExport, onLayout, onLoad, currentTheme, onThemeChang
     }
   };
 
+  const openCustomDialog = () => setCustomDialogOpen(true);
+
+  const handleThemeClick = (themeId: ThemeId) => {
+    onThemeChange(themeId);
+    if (themeId === "custom") {
+      openCustomDialog();
+    }
+  };
+
+  const percent = (value01: number) => Math.round(value01 * 100);
+  const setAlpha = (key: keyof CustomThemeSettings, pct: number) =>
+    onCustomThemeSettingsChange({
+      [key]: Math.max(0, Math.min(1, pct / 100)),
+    } as Partial<CustomThemeSettings>);
+
+  const handleCustomBgFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      onCustomBackgroundChange(file);
+    }
+    if (customBgInputRef.current) {
+      customBgInputRef.current.value = "";
+    }
+  };
+
   return (
-    <div className="w-64 h-full bg-card border-r flex flex-col z-20 shadow-xl transition-colors duration-300">
-      <div className="p-4 border-b flex items-center justify-between bg-card">
+    <div
+      className={cn(
+        "relative w-64 h-full flex flex-col z-20 transition-colors duration-300 shadow-xl",
+        // Keep the edge soft (avoid a hard border line).
+        "ring-1 ring-black/5 dark:ring-white/10",
+        "bg-[rgb(var(--sidebar-bg-rgb)/var(--sidebar-bg-alpha))] backdrop-blur-lg backdrop-saturate-150",
+        isPhotoSidebar && "text-white",
+      )}
+    >
+      <div
+        className={cn(
+          "p-4 border-b flex items-center justify-between bg-transparent",
+          isPhotoSidebar ? "border-white/15" : "border-border",
+        )}
+      >
         <div>
-          <h1 className="font-bold text-xl flex items-center gap-2 text-foreground">
+          <h1
+            className={cn(
+              "font-bold text-xl flex items-center gap-2",
+              isPhotoSidebar ? "text-white" : "text-foreground",
+            )}
+          >
             <span className="w-8 h-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-mono text-lg shadow-sm">M</span>
             MindFlow
           </h1>
@@ -70,7 +148,12 @@ export function Sidebar({ onExport, onLayout, onLoad, currentTheme, onThemeChang
           </section>
 
           <section>
-            <h3 className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wider flex items-center gap-2">
+            <h3
+              className={cn(
+                "text-xs font-semibold mb-3 uppercase tracking-wider flex items-center gap-2",
+                isPhotoSidebar ? "text-white/70" : "text-muted-foreground",
+              )}
+            >
               <Workflow className="w-3 h-3" />
               Layouts
             </h3>
@@ -95,7 +178,12 @@ export function Sidebar({ onExport, onLayout, onLoad, currentTheme, onThemeChang
           </section>
           
           <section>
-            <h3 className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wider flex items-center gap-2">
+            <h3
+              className={cn(
+                "text-xs font-semibold mb-3 uppercase tracking-wider flex items-center gap-2",
+                isPhotoSidebar ? "text-white/70" : "text-muted-foreground",
+              )}
+            >
               <Palette className="w-3 h-3" />
               Themes
             </h3>
@@ -103,7 +191,7 @@ export function Sidebar({ onExport, onLayout, onLoad, currentTheme, onThemeChang
               {themes.map((theme) => (
                 <button
                   key={theme.id}
-                  onClick={() => onThemeChange(theme.id)}
+                  onClick={() => handleThemeClick(theme.id)}
                   className={cn(
                     "relative h-16 rounded-lg border-2 transition-all overflow-hidden group",
                     currentTheme === theme.id 
@@ -132,18 +220,39 @@ export function Sidebar({ onExport, onLayout, onLoad, currentTheme, onThemeChang
                       </div>
                     </div>
                   )}
-                  <span className="absolute bottom-1 left-1 text-[8px] font-medium text-foreground/80 bg-background/50 px-1 rounded backdrop-blur-sm">
+                  <span
+                    className={cn(
+                      "absolute bottom-1 left-1 text-[8px] font-medium px-1 rounded backdrop-blur-sm",
+                      isPhotoSidebar
+                        ? "text-white/80 bg-black/35"
+                        : "text-foreground/80 bg-background/50",
+                    )}
+                  >
                     {theme.name}
                   </span>
                 </button>
               ))}
             </div>
+
+            {currentTheme === "custom" && (
+              <div className="mt-2">
+                <Button variant="outline" size="sm" className="w-full justify-start" onClick={openCustomDialog}>
+                  <Settings className="w-4 h-4 mr-2" />
+                  Customize…
+                </Button>
+              </div>
+            )}
           </section>
 
           <Separator />
 
           <section>
-            <h3 className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wider">
+            <h3
+              className={cn(
+                "text-xs font-semibold mb-3 uppercase tracking-wider",
+                isPhotoSidebar ? "text-white/70" : "text-muted-foreground",
+              )}
+            >
               Project
             </h3>
             <div className="grid gap-2">
@@ -168,7 +277,12 @@ export function Sidebar({ onExport, onLayout, onLoad, currentTheme, onThemeChang
           <Separator />
 
           <section>
-            <h3 className="text-xs font-semibold text-muted-foreground mb-3 uppercase tracking-wider">
+            <h3
+              className={cn(
+                "text-xs font-semibold mb-3 uppercase tracking-wider",
+                isPhotoSidebar ? "text-white/70" : "text-muted-foreground",
+              )}
+            >
               Export As
             </h3>
             <div className="grid gap-2">
@@ -189,14 +303,137 @@ export function Sidebar({ onExport, onLayout, onLoad, currentTheme, onThemeChang
         </div>
       </ScrollArea>
       
-      <div className="p-4 border-t bg-muted/20">
-        <p className="text-[10px] text-muted-foreground text-center">
+      <div className={cn("p-4 border-t bg-transparent", isPhotoSidebar ? "border-white/15" : "border-border")}>
+        <p className={cn("text-[10px] text-center", isPhotoSidebar ? "text-white/60" : "text-muted-foreground")}>
           Auto-saves every 2s • Right-click to Pan
         </p>
-        <p className="text-[10px] text-muted-foreground text-center mt-1">
+        <p className={cn("text-[10px] text-center mt-1", isPhotoSidebar ? "text-white/60" : "text-muted-foreground")}>
           Author: Michel-Johnson
         </p>
       </div>
+
+      <Dialog open={customDialogOpen} onOpenChange={setCustomDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Custom Theme</DialogTitle>
+            <DialogDescription>
+              Choose a background image and tune transparency for each module.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-5">
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-medium">Background image</div>
+                <div className="flex items-center gap-2">
+                  <Button variant="outline" size="sm" onClick={() => customBgInputRef.current?.click()}>
+                    <ImageIcon className="w-4 h-4 mr-2" />
+                    Choose
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={onCustomBackgroundClear}
+                    disabled={!customBackgroundUrl}
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Clear
+                  </Button>
+                  <input
+                    type="file"
+                    ref={customBgInputRef}
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleCustomBgFileChange}
+                  />
+                </div>
+              </div>
+              {customBackgroundUrl ? (
+                <div className="w-full h-32 rounded-md overflow-hidden border">
+                  <img
+                    src={customBackgroundUrl}
+                    alt="Custom background preview"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="text-xs text-muted-foreground">No image selected.</div>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-medium">Background veil</div>
+                <div className="text-xs text-muted-foreground">
+                  {percent(customThemeSettings.backgroundOverlayAlpha)}%
+                </div>
+              </div>
+              <Slider
+                value={[percent(customThemeSettings.backgroundOverlayAlpha)]}
+                min={0}
+                max={80}
+                step={1}
+                onValueChange={(v) => setAlpha("backgroundOverlayAlpha", v[0] ?? 0)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-medium">Sidebar opacity</div>
+                <div className="text-xs text-muted-foreground">
+                  {percent(customThemeSettings.sidebarAlpha)}%
+                </div>
+              </div>
+              <Slider
+                value={[percent(customThemeSettings.sidebarAlpha)]}
+                min={0}
+                max={60}
+                step={1}
+                onValueChange={(v) => setAlpha("sidebarAlpha", v[0] ?? 0)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-medium">Toolbar opacity</div>
+                <div className="text-xs text-muted-foreground">
+                  {percent(customThemeSettings.toolbarAlpha)}%
+                </div>
+              </div>
+              <Slider
+                value={[percent(customThemeSettings.toolbarAlpha)]}
+                min={0}
+                max={95}
+                step={1}
+                onValueChange={(v) => setAlpha("toolbarAlpha", v[0] ?? 0)}
+              />
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-medium">Node opacity</div>
+                <div className="text-xs text-muted-foreground">
+                  {percent(customThemeSettings.nodeAlpha)}%
+                </div>
+              </div>
+              <Slider
+                value={[percent(customThemeSettings.nodeAlpha)]}
+                min={40}
+                max={100}
+                step={1}
+                onValueChange={(v) => setAlpha("nodeAlpha", v[0] ?? 100)}
+              />
+            </div>
+
+            <div className="flex justify-end gap-2 pt-1">
+              <Button variant="outline" onClick={onCustomThemeReset}>
+                Reset defaults
+              </Button>
+              <Button onClick={() => setCustomDialogOpen(false)}>Done</Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

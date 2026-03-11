@@ -28,6 +28,14 @@ import { getLayoutedElements, LayoutDirection } from '@/lib/layout';
 import { useToast } from '@/hooks/use-toast';
 import { nanoid } from 'nanoid';
 import { themes, ThemeId } from '@/lib/themes';
+import {
+  CUSTOM_THEME_BG_KEY,
+  defaultCustomThemeSettings,
+  loadCustomThemeSettings,
+  saveCustomThemeSettings,
+  type CustomThemeSettings,
+} from '@/lib/customTheme';
+import { idbDel, idbGetBlob, idbSetBlob } from '@/lib/idb';
 
 // Helper to compute bounding box of all nodes
 const getNodesBounds = (nodes: Node[]) => {
@@ -112,7 +120,13 @@ const initialNodes: Node[] = [
 const initialEdges: Edge[] = [];
 
 // Helper to apply theme to CSS variables
-const applyTheme = (themeId: ThemeId) => {
+const applyTheme = (
+  themeId: ThemeId,
+  options?: {
+    customBackgroundUrl?: string | null;
+    customThemeSettings?: CustomThemeSettings;
+  },
+) => {
   const theme = themes.find(t => t.id === themeId) || themes[0];
   const root = document.documentElement;
 
@@ -129,12 +143,81 @@ const applyTheme = (themeId: ThemeId) => {
     const cssVar = `--${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
     root.style.setProperty(cssVar, value);
   });
+
+  const setVar = (name: string, value: string) => root.style.setProperty(name, value);
+
+  const setSidebarGlass = (rgb: string, alpha: number) => {
+    setVar('--sidebar-bg-rgb', rgb);
+    setVar('--sidebar-bg-alpha', String(alpha));
+  };
+
+  const setToolbarGlass = (rgb: string, alpha: number) => {
+    setVar('--toolbar-bg-rgb', rgb);
+    setVar('--toolbar-bg-alpha', String(alpha));
+  };
+
+  const setNodeAlpha = (alpha: number) => {
+    setVar('--node-bg-alpha', String(alpha));
+  };
+
+  // Optional theme-specific canvas background image.
+  if (theme.id === 'ocean') {
+    setVar('--canvas-bg-image', "url('/backgrounds/ocean-blue.png')");
+    // A light veil keeps text readable while still letting the photo show through.
+    setVar('--canvas-bg-image-overlay-rgb', '245 250 255');
+    setVar('--canvas-bg-image-overlay-alpha', '0.55');
+    setVar('--canvas-bg-blend-mode', 'normal');
+
+    setSidebarGlass('255 255 255', 0.03);
+    setToolbarGlass('255 255 255', 0.8);
+    setNodeAlpha(1);
+  } else if (theme.id === 'forest') {
+    setVar('--canvas-bg-image', "url('/backgrounds/forest-green.jpg')");
+    // Subdue a busy photo background: a dark veil + multiply blend so it doesn't steal focus.
+    setVar('--canvas-bg-image-overlay-rgb', '10 14 12');
+    setVar('--canvas-bg-image-overlay-alpha', '0.42');
+    setVar('--canvas-bg-blend-mode', 'multiply');
+
+    setSidebarGlass('0 0 0', 0.35);
+    setToolbarGlass('255 255 255', 0.85);
+    setNodeAlpha(1);
+  } else if (theme.id === 'custom') {
+    const settings = options?.customThemeSettings ?? defaultCustomThemeSettings;
+    const bgUrl = options?.customBackgroundUrl ?? null;
+
+    setVar('--canvas-bg-image', bgUrl ? `url('${bgUrl}')` : 'none');
+    setVar('--canvas-bg-image-overlay-rgb', '0 0 0');
+    setVar('--canvas-bg-image-overlay-alpha', String(settings.backgroundOverlayAlpha));
+    setVar('--canvas-bg-blend-mode', 'multiply');
+
+    setSidebarGlass('0 0 0', settings.sidebarAlpha);
+    setToolbarGlass('0 0 0', settings.toolbarAlpha);
+    setNodeAlpha(settings.nodeAlpha);
+  } else {
+    setVar('--canvas-bg-image', 'none');
+    setVar('--canvas-bg-image-overlay-alpha', '0');
+    setVar('--canvas-bg-blend-mode', 'normal');
+
+    if (theme.type === "dark") {
+      setSidebarGlass('0 0 0', 0.12);
+      setToolbarGlass('0 0 0', 0.75);
+    } else {
+      setSidebarGlass('255 255 255', 0.03);
+      setToolbarGlass('255 255 255', 0.8);
+    }
+    setNodeAlpha(1);
+  }
 };
 
 function MindMapContent() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [currentTheme, setCurrentTheme] = useState<ThemeId>('light');
+  const [layoutDirection, setLayoutDirection] = useState<LayoutDirection>('LR');
+  const [customThemeSettings, setCustomThemeSettings] = useState<CustomThemeSettings>(() =>
+    loadCustomThemeSettings(),
+  );
+  const [customBackgroundUrl, setCustomBackgroundUrl] = useState<string | null>(null);
   // 当前打开的项目文件名（如果是从 JSON 加载的）
   const [currentProjectName, setCurrentProjectName] = useState<string | null>(null);
   const [editingNodeId, setEditingNodeId] = useState<string | null>(null);
@@ -207,15 +290,49 @@ function MindMapContent() {
     setEditingNodeId(null);
   }, []);
 
+  // Load custom background (stored in IndexedDB) once.
+  useEffect(() => {
+    let active = true;
+
+    (async () => {
+      const blob = await idbGetBlob(CUSTOM_THEME_BG_KEY);
+      if (!active) return;
+      if (!blob) return;
+
+      const url = URL.createObjectURL(blob);
+      setCustomBackgroundUrl((prev) => {
+        if (prev) URL.revokeObjectURL(prev);
+        return url;
+      });
+    })();
+
+    return () => {
+      active = false;
+      setCustomBackgroundUrl((prev) => {
+        if (prev) URL.revokeObjectURL(prev);
+        return null;
+      });
+    };
+  }, []);
+
+  // Re-apply theme when custom settings/background change.
+  useEffect(() => {
+    if (currentTheme !== "custom") return;
+    applyTheme("custom", {
+      customBackgroundUrl,
+      customThemeSettings,
+    });
+  }, [currentTheme, customBackgroundUrl, customThemeSettings]);
+
   // Initialize Theme and Load Auto-save
   useEffect(() => {
     // Load Theme
     const savedTheme = localStorage.getItem('mindflow-theme') as ThemeId;
     if (savedTheme && themes.some(t => t.id === savedTheme)) {
       setCurrentTheme(savedTheme);
-      applyTheme(savedTheme);
+      applyTheme(savedTheme, { customBackgroundUrl, customThemeSettings });
     } else {
-      applyTheme('light');
+      applyTheme('light', { customBackgroundUrl, customThemeSettings });
     }
 
     // Load Data
@@ -359,7 +476,58 @@ function MindMapContent() {
 
   const handleThemeChange = (themeId: ThemeId) => {
     setCurrentTheme(themeId);
-    applyTheme(themeId);
+    localStorage.setItem("mindflow-theme", themeId);
+    applyTheme(themeId, { customBackgroundUrl, customThemeSettings });
+  };
+
+  const handleCustomThemeSettingsChange = (patch: Partial<CustomThemeSettings>) => {
+    const next: CustomThemeSettings = {
+      ...customThemeSettings,
+      ...patch,
+    };
+    setCustomThemeSettings(next);
+    saveCustomThemeSettings(next);
+
+    if (currentTheme === "custom") {
+      applyTheme("custom", { customBackgroundUrl, customThemeSettings: next });
+    }
+  };
+
+  const handleCustomThemeReset = () => {
+    setCustomThemeSettings(defaultCustomThemeSettings);
+    saveCustomThemeSettings(defaultCustomThemeSettings);
+
+    if (currentTheme === "custom") {
+      applyTheme("custom", {
+        customBackgroundUrl,
+        customThemeSettings: defaultCustomThemeSettings,
+      });
+    }
+  };
+
+  const handleCustomBackgroundChange = async (file: File) => {
+    await idbSetBlob(CUSTOM_THEME_BG_KEY, file);
+    const url = URL.createObjectURL(file);
+    setCustomBackgroundUrl((prev) => {
+      if (prev) URL.revokeObjectURL(prev);
+      return url;
+    });
+
+    if (currentTheme === "custom") {
+      applyTheme("custom", { customBackgroundUrl: url, customThemeSettings });
+    }
+  };
+
+  const handleCustomBackgroundClear = async () => {
+    await idbDel(CUSTOM_THEME_BG_KEY);
+    setCustomBackgroundUrl((prev) => {
+      if (prev) URL.revokeObjectURL(prev);
+      return null;
+    });
+
+    if (currentTheme === "custom") {
+      applyTheme("custom", { customBackgroundUrl: null, customThemeSettings });
+    }
   };
 
   const onConnect = useCallback(
@@ -374,6 +542,7 @@ function MindMapContent() {
 
   // Auto Layout
   const onLayout = useCallback((direction: LayoutDirection = 'LR') => {
+    setLayoutDirection(direction);
     const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
       getNodes(),
       getEdges(),
@@ -437,17 +606,18 @@ function MindMapContent() {
     nodeWidth: number, 
     nodeHeight: number,
     existingNodes: Node[],
-    direction: 'right' | 'left'
+    direction: 'right' | 'left' | 'top' | 'bottom'
   ): { x: number; y: number } => {
     const padding = 20;
     let bestX = initialX;
     let bestY = initialY;
     let minDistance = Infinity;
+    const isVerticalDirection = direction === 'top' || direction === 'bottom';
     
-    // Try different Y positions to find the best one
-    for (let yOffset = -200; yOffset <= 200; yOffset += 50) {
-      const testY = initialY + yOffset;
-      const testX = initialX;
+    // Try offsets on the cross-axis to find the best spot (right/left: vary Y, top/bottom: vary X).
+    for (let offset = -200; offset <= 200; offset += 50) {
+      const testX = isVerticalDirection ? initialX + offset : initialX;
+      const testY = isVerticalDirection ? initialY : initialY + offset;
       
       // Check if this position overlaps with any existing node
       let hasOverlap = false;
@@ -498,37 +668,71 @@ function MindMapContent() {
     
     // If still overlapping, try adjusting X position
     if (minDistance === Infinity) {
-      const xOffset = direction === 'right' ? 50 : -50;
-      for (let xAdjust = 0; xAdjust < 500; xAdjust += 50) {
-        const testX = initialX + (direction === 'right' ? xAdjust : -xAdjust);
-        let hasOverlap = false;
-        
-        for (const existingNode of existingNodes) {
-          const existingWidth = existingNode.measured?.width ?? (existingNode.data?.width as number) ?? nodeWidth;
-          const existingHeight = existingNode.measured?.height ?? (existingNode.data?.height as number) ?? nodeHeight;
+      if (!isVerticalDirection) {
+        for (let xAdjust = 0; xAdjust < 500; xAdjust += 50) {
+          const testX = initialX + (direction === 'right' ? xAdjust : -xAdjust);
+          let hasOverlap = false;
           
-          const existingLeft = existingNode.position.x;
-          const existingRight = existingNode.position.x + existingWidth;
-          const existingTop = existingNode.position.y;
-          const existingBottom = existingNode.position.y + existingHeight;
+          for (const existingNode of existingNodes) {
+            const existingWidth = existingNode.measured?.width ?? (existingNode.data?.width as number) ?? nodeWidth;
+            const existingHeight = existingNode.measured?.height ?? (existingNode.data?.height as number) ?? nodeHeight;
+            
+            const existingLeft = existingNode.position.x;
+            const existingRight = existingNode.position.x + existingWidth;
+            const existingTop = existingNode.position.y;
+            const existingBottom = existingNode.position.y + existingHeight;
+            
+            const testLeft = testX;
+            const testRight = testX + nodeWidth;
+            const testTop = bestY;
+            const testBottom = bestY + nodeHeight;
+            
+            if (!(testRight + padding < existingLeft || 
+                  testLeft - padding > existingRight || 
+                  testBottom + padding < existingTop || 
+                  testTop - padding > existingBottom)) {
+              hasOverlap = true;
+              break;
+            }
+          }
           
-          const testLeft = testX;
-          const testRight = testX + nodeWidth;
-          const testTop = bestY;
-          const testBottom = bestY + nodeHeight;
-          
-          if (!(testRight + padding < existingLeft || 
-                testLeft - padding > existingRight || 
-                testBottom + padding < existingTop || 
-                testTop - padding > existingBottom)) {
-            hasOverlap = true;
+          if (!hasOverlap) {
+            bestX = testX;
             break;
           }
         }
-        
-        if (!hasOverlap) {
-          bestX = testX;
-          break;
+      } else {
+        for (let yAdjust = 0; yAdjust < 500; yAdjust += 50) {
+          const testY = initialY + (direction === 'bottom' ? yAdjust : -yAdjust);
+          let hasOverlap = false;
+          
+          for (const existingNode of existingNodes) {
+            const existingWidth = existingNode.measured?.width ?? (existingNode.data?.width as number) ?? nodeWidth;
+            const existingHeight = existingNode.measured?.height ?? (existingNode.data?.height as number) ?? nodeHeight;
+            
+            const existingLeft = existingNode.position.x;
+            const existingRight = existingNode.position.x + existingWidth;
+            const existingTop = existingNode.position.y;
+            const existingBottom = existingNode.position.y + existingHeight;
+            
+            const testLeft = bestX;
+            const testRight = bestX + nodeWidth;
+            const testTop = testY;
+            const testBottom = testY + nodeHeight;
+            
+            if (!(testRight + padding < existingLeft || 
+                  testLeft - padding > existingRight || 
+                  testBottom + padding < existingTop || 
+                  testTop - padding > existingBottom)) {
+              hasOverlap = true;
+              break;
+            }
+          }
+          
+          if (!hasOverlap) {
+            bestY = testY;
+            break;
+          }
         }
       }
     }
@@ -603,8 +807,8 @@ function MindMapContent() {
     }
   }, [editingNodeId, getNodes, getEdges, onNodeDataChange, onEditStart, onEditEnd, onNodeResize, onFontSizeChange, onNodeSizeChange, setNodes, setEdges, toast, findNonOverlappingPosition]);
 
-  // Add Child Node (direction: 'right' or 'left')
-  const addChildNode = useCallback((direction: 'right' | 'left' = 'right') => {
+  // Add Child Node (direction: right/left for horizontal, top/bottom for vertical)
+  const addChildNode = useCallback((direction: 'right' | 'left' | 'top' | 'bottom' = 'right') => {
     if (editingNodeId) return; // Don't add child while editing
     
     const selectedNodes = getNodes().filter(n => n.selected);
@@ -618,14 +822,15 @@ function MindMapContent() {
     const allNodes = getNodes();
     
     // Calculate position based on direction
-    const xOffset = direction === 'right' ? 350 : -350;
+    const xOffset = direction === 'right' ? 350 : direction === 'left' ? -350 : 0;
+    const yOffset = direction === 'bottom' ? 250 : direction === 'top' ? -250 : 0;
     const parentLevel = (parent.data?.level as number) ?? 0;
     const defaultWidth = 200;
     const defaultHeight = 100;
     
     // Initial position
     const initialX = parent.position.x + xOffset;
-    const initialY = parent.position.y;
+    const initialY = parent.position.y + yOffset;
     
     // Find non-overlapping position
     const { x: finalX, y: finalY } = findNonOverlappingPosition(
@@ -638,8 +843,31 @@ function MindMapContent() {
     );
     
     // Set handle positions based on direction
-    const targetPos = direction === 'right' ? Position.Left : Position.Right;
-    const sourcePos = direction === 'right' ? Position.Right : Position.Left;
+    let targetPos: Position;
+    let sourcePos: Position;
+    let edgeSourceHandle: string;
+    let edgeTargetHandle: string;
+    if (direction === 'right') {
+      targetPos = Position.Left;
+      sourcePos = Position.Right;
+      edgeSourceHandle = 'right';
+      edgeTargetHandle = 'left';
+    } else if (direction === 'left') {
+      targetPos = Position.Right;
+      sourcePos = Position.Left;
+      edgeSourceHandle = 'left';
+      edgeTargetHandle = 'right';
+    } else if (direction === 'top') {
+      targetPos = Position.Bottom;
+      sourcePos = Position.Top;
+      edgeSourceHandle = 'top';
+      edgeTargetHandle = 'bottom';
+    } else {
+      targetPos = Position.Top;
+      sourcePos = Position.Bottom;
+      edgeSourceHandle = 'bottom';
+      edgeTargetHandle = 'top';
+    }
     
     const newNode: Node = {
       id: newNodeId,
@@ -668,8 +896,8 @@ function MindMapContent() {
       id: `e${parent.id}-${newNodeId}`,
       source: parent.id,
       target: newNodeId,
-      sourceHandle: direction === 'right' ? 'right' : 'left',
-      targetHandle: direction === 'right' ? 'left' : 'right',
+      sourceHandle: edgeSourceHandle,
+      targetHandle: edgeTargetHandle,
       type: ConnectionLineType.Bezier,
       animated: false,
       style: { strokeWidth: 2, stroke: '#888888' },
@@ -687,10 +915,12 @@ function MindMapContent() {
       
       if (event.key === 'Tab') {
         event.preventDefault();
+        const negativeDir = layoutDirection === 'TB' ? 'top' : 'left';
+        const positiveDir = layoutDirection === 'TB' ? 'bottom' : 'right';
         if (event.shiftKey) {
-          addChildNode('left');
+          addChildNode(negativeDir);
         } else {
-          addChildNode('right');
+          addChildNode(positiveDir);
         }
       }
       if (event.key === 'Enter') {
@@ -701,7 +931,7 @@ function MindMapContent() {
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [addChildNode, addSiblingNode, editingNodeId]);
+  }, [addChildNode, addSiblingNode, editingNodeId, layoutDirection]);
 
   // Formatting Toolbar Action with selection support
   const handleFormat = (formatStr: string, selectedText?: string) => {
@@ -924,14 +1154,20 @@ function MindMapContent() {
   };
 
   return (
-    <div className="flex h-screen w-full bg-background overflow-hidden transition-colors duration-300">
+    <div className="flex h-screen w-full bg-canvas-bg overflow-hidden transition-colors duration-300">
       <Sidebar 
         onExport={handleExport} 
         onLayout={onLayout} 
         onLoad={handleLoad} 
         currentTheme={currentTheme}
         onThemeChange={handleThemeChange}
-        onAddChild={addChildNode}
+        onAddChild={() => addChildNode(layoutDirection === 'TB' ? 'bottom' : 'right')}
+        customThemeSettings={customThemeSettings}
+        customBackgroundUrl={customBackgroundUrl}
+        onCustomBackgroundChange={handleCustomBackgroundChange}
+        onCustomBackgroundClear={handleCustomBackgroundClear}
+        onCustomThemeSettingsChange={handleCustomThemeSettingsChange}
+        onCustomThemeReset={handleCustomThemeReset}
       />
       
       <div className="flex-1 relative h-full flex flex-col" ref={reactFlowWrapper}>

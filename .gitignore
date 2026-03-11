@@ -1,7 +1,9 @@
 node_modules
 dist
 .local/
-release/win-unpacked/
+release/
+release_new/
+output/
 MindMap_For_Windows/*.exe
 .DS_Store
 server/public

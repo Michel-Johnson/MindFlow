@@ -65,7 +65,7 @@ async function createMainWindow() {
 
   const startUrl =
     process.env.ELECTRON_START_URL ||
-    `http://127.0.0.1:${process.env.PORT || DEFAULT_PORT}/`;
+    `http://localhost:${process.env.PORT || DEFAULT_PORT}/`;
 
   await waitForHttpOk(startUrl, 20000);
   await win.loadURL(startUrl);
@@ -95,4 +95,3 @@ app.whenReady().then(async () => {
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
-

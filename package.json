@@ -7,7 +7,7 @@
   "scripts": {
     "dev:client": "vite dev --port 5000",
     "dev": "cross-env NODE_ENV=development tsx server/index.ts",
-    "dev:electron": "concurrently -k -n server,electron -c green,blue \"npm run dev\" \"wait-on http://127.0.0.1:5000 && cross-env ELECTRON_START_URL=http://127.0.0.1:5000 electron .\"",
+    "dev:electron": "concurrently -k -n server,electron -c green,blue \"npm run dev\" \"wait-on http://localhost:5000 && cross-env ELECTRON_START_URL=http://localhost:5000 electron .\"",
     "build": "tsx script/build.ts",
     "start": "NODE_ENV=production node dist/index.cjs",
     "check": "tsc",

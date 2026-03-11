@@ -67,7 +67,7 @@ export function Toolbar({ onFormat, onImageUpload, disabled }: ToolbarProps) {
   };
 
   return (
-    <div className="flex items-center gap-1 p-1 bg-background/80 backdrop-blur-sm border rounded-lg shadow-sm">
+    <div className="flex items-center gap-1 p-1 bg-[rgb(var(--toolbar-bg-rgb)/var(--toolbar-bg-alpha))] backdrop-blur-sm border rounded-lg shadow-sm">
       {tools.map((tool, index) => (
         <Tooltip key={index}>
           <TooltipTrigger asChild>

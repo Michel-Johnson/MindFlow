@@ -56,17 +56,17 @@ export const themes = [
     }
   },
   {
-    id: 'sunset',
-    name: 'Sunset Gradient',
+    id: 'custom',
+    name: 'Custom',
     type: 'dark',
     colors: {
-      background: '265 40% 10%',
-      foreground: '300 20% 95%',
-      primary: '320 80% 60%',
-      nodeBg: '270 30% 15%',
-      nodeBorder: '320 60% 30%',
-      canvasBg: '265 40% 10%',
-      edge: '320 50% 40%'
+      background: '222 47% 6%',
+      foreground: '210 40% 98%',
+      primary: '142 76% 36%',
+      nodeBg: '0 0% 100%',
+      nodeBorder: '210 16% 86%',
+      canvasBg: '222 47% 6%',
+      edge: '215 20% 65%'
     }
   }
 ] as const;

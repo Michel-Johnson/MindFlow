@@ -49,10 +49,10 @@ const radialLayout = (nodes: Node[], edges: Edge[]): Node[] => {
   const handlePositions = new Map<string, { target: Position; source: Position }>();
   const visited = new Set<string>();
 
-  // Increased spacing for better readability
-  const baseRadius = 350;
-  const radiusIncrement = 280;
-  const minAngleSpacing = 0.3; // Minimum angle between siblings (in radians)
+  // Radial layout tuning (compact but avoids obvious overlaps).
+  const baseRadius = 240;
+  const radiusIncrement = 180;
+  const minAngleSpacing = 0.22; // Minimum angle between siblings (in radians)
 
   const getNodeSize = (nodeId: string): { width: number; height: number } => {
     const node = nodes.find(n => n.id === nodeId);
@@ -62,6 +62,25 @@ const radialLayout = (nodes: Node[], edges: Edge[]): Node[] => {
       height: node.measured?.height ?? nodeHeight
     };
   };
+
+  // Subtree weight (leaf-count-ish) for allocating angular space to heavy branches.
+  const subtreeWeight = new Map<string, number>();
+  const getWeight = (nodeId: string): number => {
+    const cached = subtreeWeight.get(nodeId);
+    if (cached !== undefined) return cached;
+    const nodeChildren = children.get(nodeId) || [];
+    if (nodeChildren.length === 0) {
+      subtreeWeight.set(nodeId, 1);
+      return 1;
+    }
+    let sum = 0;
+    nodeChildren.forEach((childId) => {
+      sum += getWeight(childId);
+    });
+    subtreeWeight.set(nodeId, sum);
+    return sum;
+  };
+  roots.forEach((r) => getWeight(r.id));
 
   const layoutTree = (rootId: string, offsetX: number, offsetY: number) => {
     const levels = new Map<string, number>();
@@ -101,7 +120,7 @@ const radialLayout = (nodes: Node[], edges: Edge[]): Node[] => {
       });
 
       // 4. Ensure radial distance is large enough to avoid parent/child overlap
-      const minRequiredRadius = parentHalfDiagonal + maxChildHalfDiagonal + 80; // extra padding
+      const minRequiredRadius = parentHalfDiagonal + maxChildHalfDiagonal + 50; // extra padding
       if (radius < minRequiredRadius) {
         radius = minRequiredRadius;
       }
@@ -109,13 +128,36 @@ const radialLayout = (nodes: Node[], edges: Edge[]): Node[] => {
       const parentPos = positions.get(parentId)!;
       const childAngles: number[] = [];
 
-      // Calculate required angle span based on number of children
+      // Allocate angle span by subtree weight for a more balanced radial layout.
       const availableAngle = endAngle - startAngle;
-      const minRequiredAngle = nodeChildren.length * minAngleSpacing;
-      const angleStep = Math.max(availableAngle / nodeChildren.length, minAngleSpacing);
+      const totalWeight = nodeChildren.reduce((acc, id) => acc + getWeight(id), 0);
 
+      let spans = nodeChildren.map((id) => {
+        const w = getWeight(id);
+        return (w / Math.max(totalWeight, 1)) * availableAngle;
+      });
+
+      // Enforce a minimum angular separation, but fall back to equal spacing if impossible.
+      spans = spans.map((s) => Math.max(s, minAngleSpacing));
+      const spanSum = spans.reduce((acc, s) => acc + s, 0);
+      if (spanSum > availableAngle) {
+        spans = nodeChildren.map(() => availableAngle / nodeChildren.length);
+      }
+
+      // Ensure radius is large enough to fit siblings along the arc without overlap.
+      const totalChildWidth = nodeChildren.reduce((acc, id) => acc + getNodeSize(id).width, 0);
+      const minRadiusForArc = availableAngle > 0
+        ? (totalChildWidth + 26 * Math.max(0, nodeChildren.length - 1)) / availableAngle
+        : 0;
+      if (radius < minRadiusForArc) {
+        radius = minRadiusForArc;
+      }
+
+      let cursor = startAngle;
       nodeChildren.forEach((childId, index) => {
-        const angle = startAngle + angleStep * (index + 0.5);
+        const span = spans[index] ?? (availableAngle / nodeChildren.length);
+        const angle = cursor + span / 2;
+        cursor += span;
         childAngles.push(angle);
         const x = parentPos.x + Math.cos(angle) * radius;
         const y = parentPos.y + Math.sin(angle) * radius;
@@ -125,8 +167,8 @@ const radialLayout = (nodes: Node[], edges: Edge[]): Node[] => {
         const handles = getHandlePositionFromAngle(angleToParent);
         handlePositions.set(childId, handles);
         
-        // Give children more space
-        const childAngleSpan = Math.min(angleStep * 0.9, availableAngle / nodeChildren.length);
+        // Recurse inside child's span with a small margin to reduce overlap between subtrees.
+        const childAngleSpan = Math.min(span * 0.9, availableAngle / nodeChildren.length);
         positionChildren(childId, angle - childAngleSpan / 2, angle + childAngleSpan / 2);
       });
       
@@ -159,7 +201,9 @@ const radialLayout = (nodes: Node[], edges: Edge[]): Node[] => {
   // 对于右侧子节点，持续向右平移；左侧子节点持续向左平移，直到不遮挡父节点。
   const parentChildPadding = 40;
   const parentChildStep = 40;
-  const maxParentChildIterations = 20;
+  // This post-pass tends to distort the radial shape and create very long edges.
+  // Keep it disabled; radius/angle allocation already avoids most overlaps.
+  const maxParentChildIterations = 0;
 
   edges.forEach(edge => {
     const parentId = edge.source;
@@ -700,8 +744,229 @@ const horizontalLayout = (nodes: Node[], edges: Edge[]): { nodes: Node[], edges:
 };
 
 export const getLayoutedElements = (nodes: Node[], edges: Edge[], direction: LayoutDirection = 'LR') => {
+  const verticalSplitLayout = (allNodes: Node[], allEdges: Edge[]) => {
+    if (allNodes.length === 0) return { nodes: allNodes, edges: allEdges };
+
+    // Root = node with no incoming edge (fallback to first node)
+    const targetIds = new Set(allEdges.map(e => e.target));
+    const rootNodes = allNodes.filter(n => !targetIds.has(n.id));
+    const rootNode = rootNodes.length > 0 ? rootNodes[0] : allNodes[0];
+    if (!rootNode) return { nodes: allNodes, edges: allEdges };
+
+    const rootCenterX = rootNode.position.x + (rootNode.measured?.width ?? nodeWidth) / 2;
+    const rootCenterY = rootNode.position.y + (rootNode.measured?.height ?? nodeHeight) / 2;
+
+    const childrenBySource = new Map<string, Edge[]>();
+    allEdges.forEach(e => {
+      const list = childrenBySource.get(e.source) ?? [];
+      list.push(e);
+      childrenBySource.set(e.source, list);
+    });
+
+    type Side = 'top' | 'bottom';
+    const sideById = new Map<string, Side>();
+
+    const sideFromHandle = (h?: string | null): Side | null => {
+      if (h === 'top') return 'top';
+      if (h === 'bottom') return 'bottom';
+      // When switching from horizontal -> vertical, map left/right into top/bottom.
+      if (h === 'left') return 'top';
+      if (h === 'right') return 'bottom';
+      return null;
+    };
+
+    const decideRootChildSide = (edge: Edge, index: number, siblingCount: number): Side => {
+      const fromHandle = sideFromHandle(edge.sourceHandle);
+      if (fromHandle) return fromHandle;
+
+      const target = allNodes.find(n => n.id === edge.target);
+      if (target) {
+        const targetCenterY = target.position.y + (target.measured?.height ?? nodeHeight) / 2;
+        const targetCenterX = target.position.x + (target.measured?.width ?? nodeWidth) / 2;
+        if (Math.abs(targetCenterY - rootCenterY) > 20) {
+          return targetCenterY < rootCenterY ? 'top' : 'bottom';
+        }
+        // If Y is ambiguous (typical after LR), use X split: left -> top, right -> bottom.
+        return targetCenterX < rootCenterX ? 'top' : 'bottom';
+      }
+
+      // Last resort: alternate to keep tree balanced.
+      return index < Math.ceil(siblingCount / 2) ? 'top' : 'bottom';
+    };
+
+    // Assign sides via BFS from root, inheriting parent's side unless edge explicitly overrides.
+    const rootEdges = childrenBySource.get(rootNode.id) ?? [];
+    rootEdges.forEach((e, idx) => {
+      sideById.set(e.target, decideRootChildSide(e, idx, rootEdges.length));
+    });
+
+    const queue: string[] = [...rootEdges.map(e => e.target)];
+    while (queue.length > 0) {
+      const nodeId = queue.shift()!;
+      const parentSide = sideById.get(nodeId);
+      const out = childrenBySource.get(nodeId) ?? [];
+
+      out.forEach(e => {
+        const explicit = sideFromHandle(e.sourceHandle);
+        const nextSide: Side = explicit ?? parentSide ?? 'bottom';
+        if (!sideById.has(e.target)) {
+          sideById.set(e.target, nextSide);
+          queue.push(e.target);
+        }
+      });
+    }
+
+    const runDagre = (subNodeIds: Set<string>, rankdir: 'TB' | 'BT') => {
+      const g = new dagre.graphlib.Graph();
+      g.setDefaultEdgeLabel(() => ({}));
+      g.setGraph({
+        rankdir,
+        // Vertical mindmap needs generous cross-axis spacing to avoid overlaps for wide nodes.
+        nodesep: 180,
+        ranksep: 240,
+        marginx: 140,
+        marginy: 140,
+        // Trees benefit from tight-tree; network-simplex often packs too tightly for mixed node sizes.
+        ranker: 'tight-tree'
+      });
+
+      allNodes.forEach(n => {
+        if (!subNodeIds.has(n.id)) return;
+        g.setNode(n.id, {
+          width: n.measured?.width ?? nodeWidth,
+          height: n.measured?.height ?? nodeHeight
+        });
+      });
+
+      allEdges.forEach(e => {
+        if (!subNodeIds.has(e.source) || !subNodeIds.has(e.target)) return;
+        // minlen increases distance between ranks a bit to reduce edge overlaps.
+        g.setEdge(e.source, e.target, { weight: 2, minlen: 1 });
+      });
+
+      dagre.layout(g);
+
+      const posById = new Map<string, { x: number; y: number }>();
+      subNodeIds.forEach(id => {
+        const p = g.node(id);
+        const n = allNodes.find(nn => nn.id === id);
+        if (!p || !n) return;
+        const w = n.measured?.width ?? nodeWidth;
+        const h = n.measured?.height ?? nodeHeight;
+        posById.set(id, { x: p.x - w / 2, y: p.y - h / 2 });
+      });
+
+      return posById;
+    };
+
+    const topIds = new Set<string>([rootNode.id]);
+    const bottomIds = new Set<string>([rootNode.id]);
+    allNodes.forEach(n => {
+      const side = sideById.get(n.id);
+      if (side === 'top') topIds.add(n.id);
+      else if (side === 'bottom') bottomIds.add(n.id);
+    });
+
+    // Ensure every non-root node belongs to some side.
+    allNodes.forEach(n => {
+      if (n.id === rootNode.id) return;
+      if (!topIds.has(n.id) && !bottomIds.has(n.id)) bottomIds.add(n.id);
+    });
+
+    const topPos = runDagre(topIds, 'BT');
+    const bottomPos = runDagre(bottomIds, 'TB');
+
+    // Align both sub-layouts' root to the existing root position to avoid jumping the viewport.
+    const rootGlobal = { x: rootNode.position.x, y: rootNode.position.y };
+    const topRoot = topPos.get(rootNode.id) ?? rootGlobal;
+    const bottomRoot = bottomPos.get(rootNode.id) ?? rootGlobal;
+    const topOffset = { x: rootGlobal.x - topRoot.x, y: rootGlobal.y - topRoot.y };
+    const bottomOffset = { x: rootGlobal.x - bottomRoot.x, y: rootGlobal.y - bottomRoot.y };
+
+    const getNodeSide = (id: string): Side => sideById.get(id) ?? 'bottom';
+
+    const newNodes = allNodes.map(n => {
+      if (n.id === rootNode.id) {
+        return {
+          ...n,
+          position: rootGlobal,
+          targetPosition: Position.Top,
+          sourcePosition: Position.Bottom
+        };
+      }
+
+      const side = getNodeSide(n.id);
+      const base = side === 'top' ? topPos.get(n.id) : bottomPos.get(n.id);
+      const offset = side === 'top' ? topOffset : bottomOffset;
+      const finalPos = base
+        ? { x: base.x + offset.x, y: base.y + offset.y }
+        : n.position;
+
+      return {
+        ...n,
+        position: finalPos,
+        targetPosition: side === 'top' ? Position.Bottom : Position.Top,
+        sourcePosition: side === 'top' ? Position.Top : Position.Bottom
+      };
+    });
+
+    const newEdges = allEdges.map(e => {
+      const targetSide = getNodeSide(e.target);
+      const sourceSide = e.source === rootNode.id ? targetSide : getNodeSide(e.source);
+
+      const sourceHandle =
+        e.source === rootNode.id
+          ? (targetSide === 'top' ? 'top' : 'bottom')
+          : (sourceSide === 'top' ? 'top' : 'bottom');
+
+      const targetHandle = targetSide === 'top' ? 'bottom' : 'top';
+
+      return {
+        ...e,
+        sourceHandle,
+        targetHandle
+      };
+    });
+
+    return { nodes: newNodes, edges: newEdges };
+  };
+
   if (direction === 'radial') {
-    return { nodes: radialLayout(nodes, edges), edges };
+    const layoutedNodes = radialLayout(nodes, edges);
+    const nodeById = new Map(layoutedNodes.map((n) => [n.id, n]));
+
+    const getCenter = (n: Node) => {
+      const w = (n.measured?.width ?? (n.data?.width as number) ?? nodeWidth) as number;
+      const h = (n.measured?.height ?? (n.data?.height as number) ?? nodeHeight) as number;
+      return { x: n.position.x + w / 2, y: n.position.y + h / 2 };
+    };
+
+    const vectorToHandle = (dx: number, dy: number) => {
+      if (Math.abs(dx) >= Math.abs(dy)) return dx >= 0 ? 'right' : 'left';
+      return dy >= 0 ? 'bottom' : 'top';
+    };
+
+    const opposite = (h: string) => {
+      if (h === 'left') return 'right';
+      if (h === 'right') return 'left';
+      if (h === 'top') return 'bottom';
+      return 'top';
+    };
+
+    const layoutedEdges = edges.map((e) => {
+      const src = nodeById.get(e.source);
+      const tgt = nodeById.get(e.target);
+      if (!src || !tgt) return e;
+      const sc = getCenter(src);
+      const tc = getCenter(tgt);
+      const dx = tc.x - sc.x;
+      const dy = tc.y - sc.y;
+      const sh = vectorToHandle(dx, dy);
+      const th = opposite(sh);
+      return { ...e, sourceHandle: sh, targetHandle: th };
+    });
+
+    return { nodes: layoutedNodes, edges: layoutedEdges };
   }
   
   // Use horizontal layout for LR direction
@@ -709,306 +974,6 @@ export const getLayoutedElements = (nodes: Node[], edges: Edge[], direction: Lay
     return horizontalLayout(nodes, edges);
   }
 
-  const dagreGraph = new dagre.graphlib.Graph();
-  dagreGraph.setDefaultEdgeLabel(() => ({}));
-
-  const isHorizontal = direction === 'TB' ? false : true;
-  
-  // Find root nodes
-  const targetIds = new Set(edges.map(e => e.target));
-  const rootNodes = nodes.filter(n => !targetIds.has(n.id));
-  const rootNode = rootNodes.length > 0 ? rootNodes[0] : nodes[0];
-  
-  // Determine which nodes are on the left side (horizontal) or top side (vertical) by checking edge sourceHandle
-  const leftSideNodes = new Set<string>();
-  const topSideNodes = new Set<string>();
-  
-  if (rootNode) {
-    if (isHorizontal) {
-      // First, check current positions
-      nodes.forEach(node => {
-        if (node.id !== rootNode.id) {
-          const nodeCenterX = node.position.x + (node.measured?.width ?? nodeWidth) / 2;
-          const rootCenterX = rootNode.position.x + (rootNode.measured?.width ?? nodeWidth) / 2;
-          if (nodeCenterX < rootCenterX) {
-            leftSideNodes.add(node.id);
-          }
-        }
-      });
-      
-      // Also check edges to determine direction
-      edges.forEach(edge => {
-        if (edge.sourceHandle === 'left') {
-          leftSideNodes.add(edge.target);
-        }
-      });
-    } else {
-      // For vertical layout, determine top/bottom
-      nodes.forEach(node => {
-        if (node.id !== rootNode.id) {
-          const nodeCenterY = node.position.y + (node.measured?.height ?? nodeHeight) / 2;
-          const rootCenterY = rootNode.position.y + (rootNode.measured?.height ?? nodeHeight) / 2;
-          if (nodeCenterY < rootCenterY) {
-            topSideNodes.add(node.id);
-          }
-        }
-      });
-      
-      // Check edges to determine direction
-      edges.forEach(edge => {
-        if (edge.sourceHandle === 'top') {
-          topSideNodes.add(edge.target);
-        }
-      });
-    }
-  }
-  
-  dagreGraph.setGraph({ 
-    rankdir: direction,
-    nodesep: isHorizontal ? 120 : 150, // Increased horizontal spacing between nodes
-    ranksep: isHorizontal ? 300 : 250, // Increased vertical spacing between levels
-    marginx: 150,
-    marginy: 150,
-    align: 'UL',
-    acyclicer: 'greedy',
-    ranker: 'network-simplex'
-  });
-
-  nodes.forEach((node) => {
-    dagreGraph.setNode(node.id, { 
-      width: node.measured?.width ?? nodeWidth, 
-      height: node.measured?.height ?? nodeHeight 
-    });
-  });
-
-  edges.forEach((edge) => {
-    dagreGraph.setEdge(edge.source, edge.target);
-  });
-
-  dagre.layout(dagreGraph);
-
-  // Group nodes by level for even distribution
-  const nodesByLevel = new Map<number, Array<{ node: Node; pos: dagre.Node }>>();
-  let minLevel = Infinity, maxLevel = -Infinity;
-  
-  nodes.forEach((node) => {
-    const nodeWithPosition = dagreGraph.node(node.id);
-    if (nodeWithPosition) {
-      const level = (node.data?.level as number) ?? 0;
-      minLevel = Math.min(minLevel, level);
-      maxLevel = Math.max(maxLevel, level);
-      
-      if (!nodesByLevel.has(level)) {
-        nodesByLevel.set(level, []);
-      }
-      nodesByLevel.get(level)!.push({ node, pos: nodeWithPosition });
-    }
-  });
-  
-  // Calculate spacing - increased for better readability
-  const minVerticalSpacing = isHorizontal ? 180 : 250;
-  const minHorizontalSpacing = isHorizontal ? 400 : 250;
-  const verticalRange = isHorizontal ? 1200 : 1000; // Available vertical space per level
-  
-  // Evenly distribute nodes within each level
-  nodesByLevel.forEach((nodesInLevel, level) => {
-    if (nodesInLevel.length === 0) return;
-    
-    // Sort nodes by current position
-    nodesInLevel.sort((a, b) => {
-      if (isHorizontal) {
-        return a.pos.y - b.pos.y;
-      } else {
-        return a.pos.x - b.pos.x;
-      }
-    });
-    
-    // Calculate base position for this level
-    const levelIndex = level - minLevel;
-    const basePos = levelIndex * (isHorizontal ? minHorizontalSpacing : minVerticalSpacing) + 300;
-    
-    if (nodesInLevel.length === 1) {
-      // Single node: center it
-      if (isHorizontal) {
-        nodesInLevel[0].pos.x = basePos;
-        nodesInLevel[0].pos.y = 400; // Center vertically
-      } else {
-        nodesInLevel[0].pos.x = 400; // Center horizontally
-        nodesInLevel[0].pos.y = basePos;
-      }
-    } else {
-      // Multiple nodes: distribute evenly across available space
-      const spacing = Math.max(verticalRange / (nodesInLevel.length + 1), 100);
-      const startPos = 200 + spacing; // Start with margin
-      
-      nodesInLevel.forEach((item, index) => {
-        if (isHorizontal) {
-          item.pos.x = basePos;
-          item.pos.y = startPos + index * spacing;
-        } else {
-          item.pos.x = startPos + index * spacing;
-          item.pos.y = basePos;
-        }
-      });
-    }
-  });
-
-  const newNodes = nodes.map((node) => {
-    const nodeWithPosition = dagreGraph.node(node.id);
-    if (!nodeWithPosition) return node;
-    
-    let finalX = nodeWithPosition.x - (node.measured?.width ?? nodeWidth) / 2;
-    let finalY = nodeWithPosition.y - (node.measured?.height ?? nodeHeight) / 2;
-    
-    let targetPos: Position;
-    let sourcePos: Position;
-    
-    if (isHorizontal) {
-      // For horizontal layout, preserve left/right side based on sourceHandle
-      if (rootNode && node.id !== rootNode.id) {
-        const rootX = dagreGraph.node(rootNode.id).x;
-        const nodeX = nodeWithPosition.x;
-        const shouldBeOnLeft = leftSideNodes.has(node.id);
-        const isOnLeft = nodeX < rootX;
-        
-        // If node should be on left but dagre put it on right, flip it
-        if (shouldBeOnLeft && !isOnLeft) {
-          // Calculate distance from root and flip to left side
-          const distance = nodeX - rootX;
-          finalX = rootX - distance - (node.measured?.width ?? nodeWidth);
-        } else if (!shouldBeOnLeft && isOnLeft) {
-          // Node should be on right but is on left, flip it
-          const distance = rootX - nodeX;
-          finalX = rootX + distance - (node.measured?.width ?? nodeWidth) / 2;
-        }
-      }
-      
-      // Set target and source positions based on which side the node is on
-      if (rootNode && node.id !== rootNode.id && leftSideNodes.has(node.id)) {
-        // Left side: child's right connects to parent's left
-        // So child needs target on right, source on left
-        targetPos = Position.Right;
-        sourcePos = Position.Left;
-      } else if (rootNode && node.id === rootNode.id) {
-        // Root node: check if it has children on both sides
-        const hasLeftChildren = edges.some(e => e.source === rootNode.id && e.sourceHandle === 'left');
-        const hasRightChildren = edges.some(e => e.source === rootNode.id && e.sourceHandle === 'right');
-        
-        // Root can connect to both sides, but we need to set handles correctly
-        targetPos = Position.Left;
-        // Source position will be set based on children, but we need both handles available
-        sourcePos = Position.Right;
-      } else {
-        // Right side: child's left connects to parent's right
-        // So child needs target on left, source on right
-        targetPos = Position.Left;
-        sourcePos = Position.Right;
-      }
-    } else {
-      // For vertical layout, preserve top/bottom side based on sourceHandle
-      if (rootNode && node.id !== rootNode.id) {
-        const rootY = dagreGraph.node(rootNode.id).y;
-        const nodeY = nodeWithPosition.y;
-        const shouldBeOnTop = topSideNodes.has(node.id);
-        const isOnTop = nodeY < rootY;
-        
-        // If node should be on top but dagre put it on bottom, flip it
-        if (shouldBeOnTop && !isOnTop) {
-          const distance = nodeY - rootY;
-          finalY = rootY - distance - (node.measured?.height ?? nodeHeight);
-        } else if (!shouldBeOnTop && isOnTop) {
-          const distance = rootY - nodeY;
-          finalY = rootY + distance - (node.measured?.height ?? nodeHeight) / 2;
-        }
-      }
-      
-      // Set target and source positions based on which side the node is on
-      if (rootNode && node.id !== rootNode.id && topSideNodes.has(node.id)) {
-        // Top side: child's bottom connects to parent's top
-        // So child needs target on bottom, source on top
-        targetPos = Position.Bottom;
-        sourcePos = Position.Top;
-      } else if (rootNode && node.id === rootNode.id) {
-        // Root node: can connect to both sides
-        targetPos = Position.Top;
-        sourcePos = Position.Bottom;
-      } else {
-        // Bottom side: child's top connects to parent's bottom
-        // So child needs target on top, source on bottom
-        targetPos = Position.Top;
-        sourcePos = Position.Bottom;
-      }
-    }
-    
-    const newNode = {
-      ...node,
-      targetPosition: targetPos,
-      sourcePosition: sourcePos,
-      position: {
-        x: finalX,
-        y: finalY,
-      },
-    };
-
-    return newNode;
-  });
-
-  // Update edges to have correct sourceHandle and targetHandle
-  const newEdges = edges.map((edge) => {
-    const sourceNode = newNodes.find(n => n.id === edge.source);
-    const targetNode = newNodes.find(n => n.id === edge.target);
-    
-    if (!sourceNode || !targetNode) return edge;
-    
-    let sourceHandle: string | undefined = edge.sourceHandle ?? undefined;
-    let targetHandle: string | undefined = edge.targetHandle ?? undefined;
-    
-    if (isHorizontal) {
-      // For root node, use the original sourceHandle from edge
-      if (sourceNode.id === rootNode.id) {
-        // Keep the original sourceHandle (left or right)
-        sourceHandle = edge.sourceHandle || 'right';
-      } else {
-        // For other nodes, determine based on sourcePosition
-        if (sourceNode.sourcePosition === Position.Left) {
-          sourceHandle = 'left';
-        } else if (sourceNode.sourcePosition === Position.Right) {
-          sourceHandle = 'right';
-        }
-      }
-      
-      // Target handle based on targetPosition
-      if (targetNode.targetPosition === Position.Left) {
-        targetHandle = 'left';
-      } else if (targetNode.targetPosition === Position.Right) {
-        targetHandle = 'right';
-      }
-    } else {
-      // For vertical layout
-      if (sourceNode.id === rootNode.id) {
-        // Keep the original sourceHandle (top or bottom)
-        sourceHandle = edge.sourceHandle || 'bottom';
-      } else {
-        if (sourceNode.sourcePosition === Position.Top) {
-          sourceHandle = 'top';
-        } else if (sourceNode.sourcePosition === Position.Bottom) {
-          sourceHandle = 'bottom';
-        }
-      }
-      
-      if (targetNode.targetPosition === Position.Top) {
-        targetHandle = 'top';
-      } else if (targetNode.targetPosition === Position.Bottom) {
-        targetHandle = 'bottom';
-      }
-    }
-    
-    return {
-      ...edge,
-      sourceHandle,
-      targetHandle,
-    };
-  });
-
-  return { nodes: newNodes, edges: newEdges };
+  // Vertical split layout (top and bottom subtrees) to avoid overlap/crossing.
+  return verticalSplitLayout(nodes, edges);
 };

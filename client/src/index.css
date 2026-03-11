@@ -42,7 +42,7 @@
   --font-mono: 'JetBrains Mono', monospace;
 
   /* Custom Mind Map Colors */
-  --color-node-bg: hsl(var(--node-bg));
+  --color-node-bg: hsl(var(--node-bg) / var(--node-bg-alpha));
   --color-node-border: hsl(var(--node-border));
   --color-node-selected: hsl(var(--primary));
   --color-canvas-bg: hsl(var(--canvas-bg));
@@ -75,6 +75,19 @@
   --node-border: 240 5.9% 90%;
   --canvas-bg: 240 4.8% 98.5%;
   --edge: 240 5.9% 80%;
+  --node-bg-alpha: 1;
+
+  /* Optional canvas background image (used by Ocean Blue theme). */
+  --canvas-bg-image: none;
+  --canvas-bg-image-overlay-rgb: 245 250 255;
+  --canvas-bg-image-overlay-alpha: 0;
+  --canvas-bg-blend-mode: normal;
+
+  /* Glass panel tuning (used by photo-like themes and Custom theme). */
+  --sidebar-bg-rgb: 255 255 255;
+  --sidebar-bg-alpha: 0.03;
+  --toolbar-bg-rgb: 255 255 255;
+  --toolbar-bg-alpha: 0.8;
 
   color-scheme: light;
 }
@@ -104,8 +117,35 @@
   --node-border: 216 34% 17%;
   --canvas-bg: 224 71% 4%;
   --edge: 216 34% 30%;
+  --node-bg-alpha: 1;
+
+  --canvas-bg-image: none;
+  --canvas-bg-image-overlay-rgb: 0 0 0;
+  --canvas-bg-image-overlay-alpha: 0;
+  --canvas-bg-blend-mode: normal;
+
+  --sidebar-bg-rgb: 0 0 0;
+  --sidebar-bg-alpha: 0.1;
+  --toolbar-bg-rgb: 0 0 0;
+  --toolbar-bg-alpha: 0.7;
 
   color-scheme: dark;
+}
+
+/* Canvas background image support (overrides Tailwind bg-canvas-bg color-only style). */
+.bg-canvas-bg {
+  background-color: hsl(var(--canvas-bg));
+  background-image:
+    linear-gradient(
+      rgb(var(--canvas-bg-image-overlay-rgb) / var(--canvas-bg-image-overlay-alpha)),
+      rgb(var(--canvas-bg-image-overlay-rgb) / var(--canvas-bg-image-overlay-alpha))
+    ),
+    var(--canvas-bg-image);
+  background-blend-mode: var(--canvas-bg-blend-mode, normal), normal;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 /* Custom Cursor for better visibility in all modes */
