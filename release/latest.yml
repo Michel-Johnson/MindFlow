@@ -1,0 +1,8 @@
+version: 1.0.0
+files:
+  - url: MindFlow-Setup-1.0.0.exe
+    sha512: RUWZLofi7LLI+UON+I4tAxufdy8Z02sxdP2+2d4ryujaA2OFlVwuW7v2dmk+tSQL8XJQ4pfgFRdM1s+1znP4qA==
+    size: 103475129
+path: MindFlow-Setup-1.0.0.exe
+sha512: RUWZLofi7LLI+UON+I4tAxufdy8Z02sxdP2+2d4ryujaA2OFlVwuW7v2dmk+tSQL8XJQ4pfgFRdM1s+1znP4qA==
+releaseDate: '2026-03-11T06:53:17.332Z'

@@ -139,8 +139,15 @@ function MindMapContent() {
   const [currentProjectName, setCurrentProjectName] = useState<string | null>(null);
   const [editingNodeId, setEditingNodeId] = useState<string | null>(null);
   const { fitView, getNodes, getEdges, setViewport, getViewport } = useReactFlow();
-  const { toast } = useToast();
+  const { toast: rawToast } = useToast();
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
+  const isRestoringAutosaveRef = useRef(false);
+  const autosaveTimeoutId = useRef<number | null>(null);
+  const lastAutosaveJsonRef = useRef<string | null>(null);
+  const toast = useCallback((...args: Parameters<typeof rawToast>) => {
+    if (isRestoringAutosaveRef.current) return;
+    return rawToast(...args);
+  }, [rawToast]);
   
   // Handle node data updates (Memoized to be stable)
   const onNodeDataChange = useCallback((id: string, newLabel: string) => {
@@ -214,17 +221,22 @@ function MindMapContent() {
     // Load Data
     const savedData = localStorage.getItem('mindflow-autosave');
     if (savedData) {
+      isRestoringAutosaveRef.current = true;
       try {
         const data = JSON.parse(savedData);
         if (data.nodes && data.edges) {
           setNodes(data.nodes);
           setEdges(data.edges);
-          if (data.viewport) setViewport(data.viewport);
+          if (data.viewport) {
+            // ReactFlow mounts after the initial render; schedule viewport restore.
+            window.requestAnimationFrame(() => setViewport(data.viewport));
+          }
           toast({ title: "已恢复", description: "已恢复上次的会话内容", duration: 2000 });
         }
       } catch (e) {
         console.error("Failed to load autosave", e);
       }
+      isRestoringAutosaveRef.current = false;
     }
   }, []);
 
@@ -265,34 +277,85 @@ function MindMapContent() {
     }
   }, [edges, onNodeDataChange, onEditStart, onEditEnd, onNodeResize, onFontSizeChange, onNodeSizeChange, setNodes, getNodes, getEdges]);
 
-  // Auto-Save Logic
+  const buildAutosaveData = useCallback(() => {
+    // Clean up handlers/callbacks before saving to storage.
+    const cleanNodes = getNodes().map(node => ({
+      ...node,
+      data: {
+        label: node.data.label,
+        emoji: node.data.emoji,
+        width: node.data.width,
+        height: node.data.height,
+        level: node.data.level,
+        fontSize: node.data.fontSize,
+        nodeSize: node.data.nodeSize
+      }
+    }));
+
+    return {
+      nodes: cleanNodes,
+      edges: getEdges(),
+      viewport: getViewport(),
+      theme: currentTheme,
+      projectName: currentProjectName,
+      version: 1,
+      savedAt: Date.now()
+    };
+  }, [currentProjectName, currentTheme, getEdges, getNodes, getViewport]);
+
+  const flushAutosave = useCallback(() => {
+    if (autosaveTimeoutId.current !== null) {
+      window.clearTimeout(autosaveTimeoutId.current);
+      autosaveTimeoutId.current = null;
+    }
+
+    try {
+      const json = JSON.stringify(buildAutosaveData());
+      if (json !== lastAutosaveJsonRef.current) {
+        localStorage.setItem('mindflow-autosave', json);
+        localStorage.setItem('mindflow-theme', currentTheme);
+        lastAutosaveJsonRef.current = json;
+      }
+    } catch (e) {
+      console.error("Failed to autosave", e);
+    }
+  }, [buildAutosaveData, currentTheme]);
+
+  // Auto-Save Logic (debounced) + force flush on exit/hide
   useEffect(() => {
-    const saveData = () => {
-      // Clean up handlers before saving
-      const cleanNodes = getNodes().map(node => ({
-        ...node,
-        data: {
-          label: node.data.label,
-          emoji: node.data.emoji,
-          width: node.data.width,
-          height: node.data.height,
-          level: node.data.level,
-          fontSize: node.data.fontSize,
-          nodeSize: node.data.nodeSize
-        }
-      }));
-      const data = {
-        nodes: cleanNodes,
-        edges: getEdges(),
-        viewport: getViewport()
-      };
-      localStorage.setItem('mindflow-autosave', JSON.stringify(data));
-      localStorage.setItem('mindflow-theme', currentTheme);
+    if (autosaveTimeoutId.current !== null) {
+      window.clearTimeout(autosaveTimeoutId.current);
+    }
+
+    autosaveTimeoutId.current = window.setTimeout(() => {
+      flushAutosave();
+    }, 2000); // Debounce 2s
+
+    return () => {
+      if (autosaveTimeoutId.current !== null) {
+        window.clearTimeout(autosaveTimeoutId.current);
+        autosaveTimeoutId.current = null;
+      }
+    };
+  }, [nodes, edges, currentTheme, flushAutosave]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        flushAutosave();
+      }
     };
 
-    const timeoutId = setTimeout(saveData, 2000); // Debounce 2s
-    return () => clearTimeout(timeoutId);
-  }, [nodes, edges, currentTheme, getNodes, getEdges, getViewport]);
+    window.addEventListener('beforeunload', flushAutosave);
+    window.addEventListener('pagehide', flushAutosave);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener('beforeunload', flushAutosave);
+      window.removeEventListener('pagehide', flushAutosave);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [flushAutosave]);
 
   const handleThemeChange = (themeId: ThemeId) => {
     setCurrentTheme(themeId);

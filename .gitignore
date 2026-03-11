@@ -1,5 +1,8 @@
 node_modules
 dist
+.local/
+release/win-unpacked/
+MindMap_For_Windows/*.exe
 .DS_Store
 server/public
 vite.config.ts.*
