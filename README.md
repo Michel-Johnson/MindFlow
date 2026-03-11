@@ -1,7 +1,12 @@
-如果你使用Windows系统，请直接下载MindMap_For_Windows这个文件夹，以管理员身份运行exe文件即可。
-详细使用教程待更新
-
+# MindFlow
+这是一个思维导图项目，通过vibe coding生成
+- 支持用 Markdown 语法 来写思维导图内容。支持公式/图片插入/高亮等Markdown语法。
+- 点击release中的.exe文件即可安装。
+- 可以把导图导出成 PDF、SVG、PNG。
 包含5种颜色主题
+
+## 使用教程
+1. 在程序中点击？，即可查看使用教程
 
 ![1](pics/1.png)
 
@@ -9,8 +14,8 @@
 
 ![mindmap](pics/mindmap.png)
 
-当前版本可以导出.png  .pdf .svg文件
+
 
 当前仅支持Horizontal自动排列
 
-自动保存功能还未添加，因此关闭前请保存文件，可以Ctrl+S，也可以点击Save Project
+
